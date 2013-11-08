@@ -1,0 +1,17 @@
+{
+	"bold_folder_labels": true,
+	"color_scheme": "Packages/Color Scheme - Default/iPlastic.tmTheme",
+	"drag_text": false,
+	"fade_fold_buttons": false,
+	"font_face": "Consolas",
+	"font_size": 9,
+	"highlight_line": true,
+	"highlight_modified_tabs": true,
+	"ignored_packages":
+	[
+		"Vintage"
+	],
+	"shift_tab_unindent": false,
+	"tree_animation_enabled": false,
+	"word_wrap": true
+}

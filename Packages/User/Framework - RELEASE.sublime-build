@@ -1,0 +1,10 @@
+{
+	"cmd": ["ant"],
+	"working_dir": "${project_path:${folder}}",
+
+	"windows":
+	{
+		"cmd": ["sh", "build.sh", "../../build"
+		]
+	}
+}

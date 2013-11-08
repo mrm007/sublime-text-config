@@ -1,0 +1,16 @@
+*.cache
+*.pyc
+
+Package Control.last-run
+Package Control.ca-list
+Package Control.ca-bundle
+Package Control.system-ca-bundle
+Package Control.cache/
+Package Control.ca-certs/
+
+Backup/
+Pristine Packages/
+Settings/
+License.sublime_license
+Auto Save Session.sublime_session
+Session.sublime_session

@@ -1,0 +1,13 @@
+{
+	"working_dir": "${project_path:${folder}}",
+	"shell": true,
+
+	"windows": {
+		"cmd": ["sh", "setDEBUG.sh", "'*'",
+				"node", "app.js",
+				"--input", "${project_path:${folder}}/list.txt",
+				"--output", "${project_path:${folder}}/list.csv",
+				"--common", "D:/workspace/AeL-eContent-Kazahstan-2/Demo/RED/common/"
+		]
+	}
+}

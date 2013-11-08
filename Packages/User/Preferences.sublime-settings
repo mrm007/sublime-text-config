@@ -1,4 +1,6 @@
 {
+	"font_face": "Consolas",
+	"font_size": 9,
 	"bold_folder_labels": true,
 	"color_scheme": "Packages/Color Scheme - Default/iPlastic.tmTheme",
 	"drag_text": false,

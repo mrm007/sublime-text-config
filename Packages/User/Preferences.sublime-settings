@@ -2,9 +2,8 @@
 	"bold_folder_labels": true,
 	"color_scheme": "Packages/Color Scheme - Default/iPlastic.tmTheme",
 	"drag_text": false,
+	"draw_white_space": "selection",
 	"fade_fold_buttons": false,
-	"font_face": "Consolas",
-	"font_size": 9,
 	"highlight_line": true,
 	"highlight_modified_tabs": true,
 	"ignored_packages":

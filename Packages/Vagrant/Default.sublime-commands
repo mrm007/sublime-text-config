@@ -1,0 +1,34 @@
+[
+    {
+        "caption": "Vagrant: Reload",
+        "command": "vagrant_reload"
+    },
+    {
+        "caption": "Vagrant: Destroy",
+        "command": "vagrant_destroy"
+    },
+    {
+        "caption": "Vagrant: Start",
+        "command": "vagrant_up"
+    },
+    {
+        "caption": "Vagrant: Destroy && Up",
+        "command": "vagrant_destroy_up"
+    },
+    {
+        "caption": "Vagrant: Init",
+        "command": "vagrant_init"
+    },
+    {
+        "caption": "Vagrant: Suspend",
+        "command": "vagrant_suspend"
+    },
+    {
+        "caption": "Vagrant: Halt",
+        "command": "vagrant_halt"
+    },
+    {
+        "caption": "Vagrant: Provision",
+        "command": "vagrant_provision"
+    }
+]

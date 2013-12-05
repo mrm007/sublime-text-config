@@ -13,15 +13,18 @@ if int(sublime.version()) < 3000:
 
 class PlainTasksBase(sublime_plugin.TextCommand):
     def run(self, edit):
-        if self.view.settings().get('taskpaper_compatible'):
+        self.taskpaper_compatible = self.view.settings().get('taskpaper_compatible')
+        if self.taskpaper_compatible:
             self.open_tasks_bullet = self.done_tasks_bullet = self.canc_tasks_bullet = '-'
+            self.before_date_space = ''
         else:
             self.open_tasks_bullet = self.view.settings().get('open_tasks_bullet')
             self.done_tasks_bullet = self.view.settings().get('done_tasks_bullet')
             self.canc_tasks_bullet = self.view.settings().get('cancelled_tasks_bullet')
+            self.before_date_space = ' '
         self.before_tasks_bullet_spaces = ' ' * self.view.settings().get('before_tasks_bullet_margin')
         self.date_format = self.view.settings().get('date_format')
-        if self.view.settings().get('done_tag') or self.view.settings().get('taskpaper_compatible'):
+        if self.view.settings().get('done_tag') or self.taskpaper_compatible:
             self.done_tag = "@done"
             self.canc_tag = "@cancelled"
         else:
@@ -83,21 +86,21 @@ class PlainTasksCompleteCommand(PlainTasksBase):
     def runCommand(self, edit):
         original = [r for r in self.view.sel()]
         try:
-            done_line_end = ' %s %s' % (self.done_tag, datetime.now().strftime(self.date_format).decode(self.sys_enc))
+            done_line_end = ' %s%s%s' % (self.done_tag, self.before_date_space, datetime.now().strftime(self.date_format).decode(self.sys_enc))
         except:
-            done_line_end = ' %s %s' % (self.done_tag, datetime.now().strftime(self.date_format))
+            done_line_end = ' %s%s%s' % (self.done_tag, self.before_date_space, datetime.now().strftime(self.date_format))
         offset = len(done_line_end)
         for region in self.view.sel():
             line = self.view.line(region)
             line_contents = self.view.substr(line).rstrip()
-            if self.view.settings().get('taskpaper_compatible'):
-                rom = '^(\s*)-(\s*[^\b]*\s*)(?!\s@(done|cancelled))[\(\)\d\w,\.:\-\/ @]*\s*$'
-                rdm = '^(\s*)-(\s*[^\b]*?\s*)(?=\s@done)[\(\)\d\w,\.:\-\/ @]*\s*$'
-                rcm = '^(\s*)-(\s*[^\b]*?\s*)(?=\s@cancelled)[\(\)\d\w,\.:\-\/ @]*\s*$'
+            if self.taskpaper_compatible:
+                rom = '^(\s*)-(\s*[^\b]*\s*)(?!\s@(done|cancelled)).*$'
+                rdm = '^(\s*)-(\s*[^\b]*?\s*)(?=\s@done).*$'
+                rcm = '^(\s*)-(\s*[^\b]*?\s*)(?=\s@cancelled).*$'
             else:
                 rom = '^(\s*)' + re.escape(self.open_tasks_bullet) + '(\s*.*)$'
-                rdm = '^(\s*)' + re.escape(self.done_tasks_bullet) + '(\s*[^\b]*?\s*)(?=\s@done|@project|\s\(|$)[\(\)\d\w,\.:\-\/ @]*\s*$'
-                rcm = '^(\s*)' + re.escape(self.canc_tasks_bullet) + '(\s*[^\b]*?\s*)(?=\s@cancelled|@project|\s\(|$)[\(\)\d\w,\.:\-\/ @]*\s*$'
+                rdm = '^(\s*)' + re.escape(self.done_tasks_bullet) + '(\s*[^\b]*?\s*)(?=\s@done|@project|\s\(|$).*$'
+                rcm = '^(\s*)' + re.escape(self.canc_tasks_bullet) + '(\s*[^\b]*?\s*)(?=\s@cancelled|@project|\s\(|$).*$'
             started = '^\s*[^\b]*?\s*@started(\([\d\w,\.:\-\/ @]*\)).*$'
             open_matches = re.match(rom, line_contents, re.U)
             done_matches = re.match(rdm, line_contents, re.U)
@@ -134,21 +137,21 @@ class PlainTasksCancelCommand(PlainTasksBase):
     def runCommand(self, edit):
         original = [r for r in self.view.sel()]
         try:
-            canc_line_end = ' %s %s' % (self.canc_tag, datetime.now().strftime(self.date_format).decode(self.sys_enc))
+            canc_line_end = ' %s%s%s' % (self.canc_tag,self.before_date_space, datetime.now().strftime(self.date_format).decode(self.sys_enc))
         except:
-            canc_line_end = ' %s %s' % (self.canc_tag, datetime.now().strftime(self.date_format))
+            canc_line_end = ' %s%s%s' % (self.canc_tag,self.before_date_space, datetime.now().strftime(self.date_format))
         offset = len(canc_line_end)
         for region in self.view.sel():
             line = self.view.line(region)
             line_contents = self.view.substr(line).rstrip()
-            if self.view.settings().get('taskpaper_compatible'):
-                rom = '^(\s*)-(\s*[^\b]*\s*)(?!\s@(done|cancelled))[\(\)\d\w,\.:\-\/ @]*\s*$'
-                rdm = '^(\s*)-(\s*[^\b]*?\s*)(?=\s@done)[\(\)\d\w,\.:\-\/ @]*\s*$'
-                rcm = '^(\s*)-(\s*[^\b]*?\s*)(?=\s@cancelled)[\(\)\d\w,\.:\-\/ @]*\s*$'
+            if self.taskpaper_compatible:
+                rom = '^(\s*)-(\s*[^\b]*\s*)(?!\s@(done|cancelled)).*$'
+                rdm = '^(\s*)-(\s*[^\b]*?\s*)(?=\s@done).*$'
+                rcm = '^(\s*)-(\s*[^\b]*?\s*)(?=\s@cancelled).*$'
             else:
                 rom = '^(\s*)' + re.escape(self.open_tasks_bullet) + '(\s*.*)$'
-                rdm = '^(\s*)' + re.escape(self.done_tasks_bullet) + '(\s*[^\b]*?\s*)(?=\s@done|@project|\s\(|$)[\(\)\d\w,\.:\-\/ @]*\s*$'
-                rcm = '^(\s*)' + re.escape(self.canc_tasks_bullet) + '(\s*[^\b]*?\s*)(?=\s@cancelled|@project|\s\(|$)[\(\)\d\w,\.:\-\/ @]*\s*$'
+                rdm = '^(\s*)' + re.escape(self.done_tasks_bullet) + '(\s*[^\b]*?\s*)(?=\s@done|@project|\s\(|$).*$'
+                rcm = '^(\s*)' + re.escape(self.canc_tasks_bullet) + '(\s*[^\b]*?\s*)(?=\s@cancelled|@project|\s\(|$).*$'
             started = '^\s*[^\b]*?\s*@started(\([\d\w,\.:\-\/ @]*\)).*$'
             open_matches = re.match(rom, line_contents, re.U)
             done_matches = re.match(rdm, line_contents, re.U)
@@ -183,7 +186,7 @@ class PlainTasksCancelCommand(PlainTasksBase):
 
 class PlainTasksArchiveCommand(PlainTasksBase):
     def runCommand(self, edit):
-        if self.view.settings().get('taskpaper_compatible'):
+        if self.taskpaper_compatible:
             rdm = '^(\s*)-(\s*[^\n]*?\s*)(?=\s@done)[\(\)\d\w,\.:\-\/ @]*\s*[^\n]$'
             rcm = '^(\s*)-(\s*[^\n]*?\s*)(?=\s@cancelled)[\(\)\d\w,\.:\-\/ @]*\s*[^\n]$'
         else:
@@ -224,7 +227,7 @@ class PlainTasksArchiveCommand(PlainTasksBase):
 
             # adding tasks to archive section
             for task in all_tasks:
-                if self.view.settings().get('taskpaper_compatible'):
+                if self.taskpaper_compatible:
                     match_task = re.match('^\s*(-)(\s*[^\n]*?)', self.view.substr(task), re.U)
                 else:
                     match_task = re.match('^\s*(' + re.escape(self.done_tasks_bullet) + '|' + re.escape(self.canc_tasks_bullet) + ')(\s+.*$)', self.view.substr(task), re.U)
@@ -342,22 +345,20 @@ class PlainTasksOpenUrlCommand(sublime_plugin.TextCommand):
 
 
 class PlainTasksOpenLinkCommand(sublime_plugin.TextCommand):
-
-    LINK_PATTERN = re.compile(r'#(?P<fn>[^ \t\n\r\f\v@]+)(@(?P<sym>\w+))?')
+    LINK_PATTERN = re.compile(r'\.[\\/](?P<fn>[^\\/:*?"<>|]+[\\/]?)+[\\/]?(>(?P<sym>\w+))?(\:(?P<line>\d+))?(\:(?P<col>\d+))?(\"(?P<text>[^\n]*)\")?', re.I| re.U)
 
     def _format_res(self, res):
-        return [res[0], "line: %d column: %d" % (res[1], res[2])]
+        return [res[0], "line: %d column: %d" % (int(res[1]), int(res[2]))]
 
     def _on_panel_selection(self, selection):
         if selection >= 0:
             res = self._current_res[selection]
             win = sublime.active_window()
-            win.open_file('%s:%s:%s' % res, sublime.ENCODED_POSITION)
+            self.opened_file = win.open_file('%s:%s:%s' % res, sublime.ENCODED_POSITION)
 
-    def show_panel_or_open(self, fn, sym):
+    def show_panel_or_open(self, fn, sym, line, col, text):
         win = sublime.active_window()
         self._current_res = list()
-
         if sym:
             for name, _, pos in win.lookup_symbol_in_index(sym):
                 if name.endswith(fn):
@@ -367,11 +368,10 @@ class PlainTasksOpenLinkCommand(sublime_plugin.TextCommand):
             fn = fn.replace('/', os.sep)
             for folder in win.folders():
                 for root, dirnames, filenames in os.walk(folder):
-                    filenames = [os.path.join(root, f) for f in filenames]
+                    filenames = [os.path.join(root, f) for f in filenames] + [v.file_name() for v in win.views() if v.file_name()]
                     for name in filenames:
-                        if name.endswith(fn):
-                            self._current_res.append((name, 0, 0))
-
+                        if name.lower().endswith(fn.lower()):
+                            self._current_res.append((name, line if line else 0, col if col else 0))
         if len(self._current_res) == 1:
             self._on_panel_selection(0)
         else:
@@ -383,8 +383,17 @@ class PlainTasksOpenLinkCommand(sublime_plugin.TextCommand):
         line = self.view.substr(self.view.line(point))
         match = self.LINK_PATTERN.search(line)
         if match:
-            fn, sym = match.group('fn', 'sym')
-            self.show_panel_or_open(fn, sym)
+            fn, sym, line, col, text = match.group('fn', 'sym', 'line', 'col', 'text')
+            self.show_panel_or_open(fn, sym, line, col, text)
+            if text:
+                sublime.set_timeout(lambda:self.find_text(self.opened_file, text, line), 50)
+
+    def find_text(self, view, text, line):
+        result = view.find(text, view.sel()[0].a if line else 0, sublime.LITERAL)
+        view.sel().clear()
+        view.sel().add(result.a)
+        view.set_viewport_position(view.text_to_layout(view.size()), False)
+        view.show_at_center(result)
 
 
 class PlainTasksSortByDate(PlainTasksBase):

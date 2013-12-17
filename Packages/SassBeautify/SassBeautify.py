@@ -8,7 +8,7 @@ import os
 import subprocess
 import threading
 
-__version__ = '0.4.0'
+__version__ = '0.4.1'
 __author__ = 'Richard Willis'
 __email__ = 'willis.rh@gmail.com'
 __copyright__ = 'Copyright 2013, Richard Willis'
@@ -47,8 +47,7 @@ class ExecSassCommand(threading.Thread):
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE
             )
-            (self.stdout, self.stderr) = process.communicate(
-                input=self.stdin)
+            (self.stdout, self.stderr) = process.communicate(input=self.stdin)
             self.returncode = process.returncode
         except OSError as e:
             self.stderr = str(e)
@@ -71,10 +70,10 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
     Our main SassBeautify ST text command.
     '''
 
-    def run(self, edit, action='beautify', type=None):
+    def run(self, edit, action='beautify', convert_from_type=None):
 
         self.action = action
-        self.type = type
+        self.convert_from_type = convert_from_type
         self.settings = sublime.load_settings('SassBeautify.sublime-settings')
 
         if self.check_file() != False:
@@ -88,12 +87,11 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         # A file has to be saved so we can get the conversion type from the
         # file extension.
         if self.view.file_name() == None:
-            sublime.error_message(
-                'Please save this file before trying to beautify.')
+            sublime.error_message('Please save this file before trying to beautify.')
             return False
 
         # Check the file has the correct extension before beautifying.
-        if self.get_ext() not in ['sass', 'scss']:
+        if self.get_type() not in ['sass', 'scss']:
             sublime.error_message('Not a valid Sass file.')
             return False
 
@@ -111,9 +109,11 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         Execute the threaded sass command.
         '''
         thread = ExecSassCommand(
-            self.get_cmd(), self.get_env(), self.get_text())
+            self.get_cmd(),
+            self.get_env(),
+            self.get_text()
+        )
         thread.start()
-
         self.check_thread(thread)
 
     def check_thread(self, thread, i=0, dir=1):
@@ -127,8 +127,11 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         if not before:
             dir = 1
         i += dir
+
         self.view.set_status(
-            'sassbeautify', 'SassBeautify [%s=%s]' % (' ' * before, ' ' * after))
+            'sassbeautify',
+            'SassBeautify [%s=%s]' % (' ' * before, ' ' * after)
+        )
 
         if thread.is_alive():
             return sublime.set_timeout(lambda: self.check_thread(thread, i, dir), 100)
@@ -163,15 +166,15 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         '''
         Generate the sass command we'll use to beauitfy the sass.
         '''
-        ext = self.get_ext()
+        filetype = self.get_type()
 
         cmd = [
             'sass-convert',
             '--unix-newlines',
             '--stdin',
             '--indent', str(self.settings.get('indent')),
-            '--from', ext if self.action == 'beautify' else self.type,
-            '--to', ext
+            '--from', filetype if self.action == 'beautify' else self.convert_from_type,
+            '--to', filetype
         ]
 
         # Convert underscores to dashes.
@@ -180,7 +183,7 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
 
         # Output the old-style ':prop val' property syntax.
         # Only meaningful when generating Sass.
-        if self.settings.get('old') == True and ext == 'sass':
+        if self.settings.get('old') == True and filetype == 'sass':
             cmd.append('--old')
 
         return cmd
@@ -204,6 +207,17 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         (basename, ext) = os.path.splitext(self.view.file_name())
         return ext.strip('.')
 
+    def get_type(self):
+        '''
+        Returns the file type.
+        '''
+        filetype = self.get_ext();
+        # Added experimental CSS support with issue #27.
+        # If this is a CSS file, then we're to treat it exactly like a SCSS file.
+        if self.action == 'beautify' and filetype == 'css':
+            filetype = 'scss'
+        return filetype
+
     def get_text(self):
         '''
         Get the sass text from the Sublime view.
@@ -215,5 +229,4 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         Save the file and show a success message.
         '''
         self.view.run_command('save')
-        sublime.status_message(
-            'Successfully beautified ' + self.view.file_name())
+        sublime.status_message('Successfully beautified ' + self.view.file_name())

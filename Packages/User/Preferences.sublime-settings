@@ -13,7 +13,7 @@
 		"Vintage",
 		"LiveReload"
 	],
-	"shift_tab_unindent": false,
+	"shift_tab_unindent": true,
 	"tree_animation_enabled": false,
 	"word_wrap": true
 }

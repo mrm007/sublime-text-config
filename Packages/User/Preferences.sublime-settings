@@ -10,7 +10,8 @@
 	"highlight_modified_tabs": true,
 	"ignored_packages":
 	[
-		"Vintage"
+		"Vintage",
+		"LiveReload"
 	],
 	"shift_tab_unindent": false,
 	"tree_animation_enabled": false,

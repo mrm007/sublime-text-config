@@ -13,7 +13,9 @@
 		"Vintage",
 		"LiveReload"
 	],
+	"reveal-on-activate": true,
 	"shift_tab_unindent": true,
+	"tab_size": 2,
 	"tree_animation_enabled": false,
 	"word_wrap": true
 }

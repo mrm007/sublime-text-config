@@ -13,29 +13,6 @@ patterns:
 - include: '#special'
 
 repository:
-  arrow-function:
-    patterns:
-    - name: arrow.function.js
-      patterns:
-      # e.g. (args) =>
-      - name: storage.type.function.arrow.js
-        match: |-
-          (?x)
-            \s*
-            (
-             (?:
-                (\() (.*?)? (\)))|
-                ([_$a-zA-Z][_$\w]*
-              )
-            )\s*(=>)
-        captures:
-          '1': {name: entity.arrow.function.js}
-          '2': {name: punctuation.definition.parameters.begin.js}
-          '3': {name: variable.parameter.function.arrow.js}
-          '4': {name: punctuation.definition.parameters.end.js}
-          '5': {name: variable.parameter.function.arrow.js}
-          '6': {name: punctuation.definition.arrow.js}
-
   brackets:
     patterns:
     - name: meta.function-call.method.with-arguments.js
@@ -55,7 +32,7 @@ repository:
       endCaptures:
         '1': {name: meta.brace.round.js}
       patterns:
-      - include: $base
+      - include: source.js
 
     - name: meta.group.braces.square
       begin: (\[)
@@ -65,14 +42,14 @@ repository:
       endCaptures:
         '1': {name: meta.brace.square.js}
       patterns:
-      - include: $base
+      - include: source.js
 
   comments:
     patterns:
     - include: '#special-comments-conditional-compilation'
 
     - name: comment.block.documentation.js
-      begin: /\*\*
+      begin: /\*\*(?!/)
       end: \*/
       captures:
         '0': {name: punctuation.definition.comment.js}
@@ -94,32 +71,58 @@ repository:
         '0': {name: punctuation.definition.comment.html.js}
         '2': {name: punctuation.definition.comment.html.js}
 
+  function-declaration-parameters:
+    patterns:
+    - begin: (\()
+      beginCaptures:
+        '1': {name: punctuation.definition.parameters.begin.js}
+      end: (\))
+      endCaptures:
+        '1': {name: punctuation.definition.parameters.end.js}
+      patterns:
+        - name: variable.parameter.function.js
+          match: |-
+            (?x)
+              [_$a-zA-Z][_$\w]*
+        - name: punctuation.separator.parameter.function.js
+          match: ','
+        - include: '#comments'
+
   core:
     patterns:
     - include: '#leading-space'
-    - include: '#brackets'
 
-    # literals should precede operators to avoid ambiguoties
+    # literals
+    - include: '#literal-regex'               # before operators to avoid ambiguities
     - include: '#literal-number'
-    - include: '#literal-string'
     - include: '#literal-quasi'
-    - include: '#literal-regex'
+    - include: '#literal-language-constant'
 
+    # keywords/operators
     - include: '#literal-keywords'
 
-    - include: '#arrow-function'
-
+    # modules/classes/functions
     - include: '#literal-class'
     - include: '#literal-module'
-    # before function calls, to differentiate methods from them
-    - include: '#literal-method'
+    - include: '#literal-arrow-function'
+    - include: '#literal-function-storage'
+    - include: '#literal-method'              # before function calls & after function declarations, to differentiate methods from them
+    - include: '#literal-prototype-storage'   # after literal-function-storage, which includes some prototype strings
 
+    # after literal-function-storage which requires the below in some cases
+    - include: '#literal-string'
+    - include: '#literal-language-variable'
+
+    # function calls
     - include: '#literal-function-call'
-    - include: '#literal-function-constructor'
 
+    # punctuation
     - include: '#literal-labels'
     - include: '#literal-variable'
     - include: '#literal-punctuation'
+
+    # brackets
+    - include: '#brackets'
 
   literal-module:
     patterns:
@@ -157,13 +160,13 @@ repository:
 
     # getter/setter
     - name: meta.accessor.js
-      match: \b([gs]et\s*)\b([_$a-zA-Z][_$\w]*)\s*(\()(.*?)(\))
-      captures:
+      begin: \b(get|set)\s*\b([_$a-zA-Z][_$\w]*)\s*
+      beginCaptures:
         '1': {name: storage.type.accessor.js}
         '2': {name: entity.name.accessor.js}
-        '3': {name: punctuation.definition.parameters.begin.js}
-        '4': {name: variable.parameter.accessor.js}
-        '5': {name: punctuation.definition.parameters.end.js}
+      end: (?<=\))
+      patterns:
+        - include: '#function-declaration-parameters'
 
   literal-function-call:
     patterns:
@@ -174,36 +177,14 @@ repository:
       - name: entity.name.function.js
         match: ([_$a-zA-Z][_$\w]*)?
 
-  literal-function-constructor:
+  literal-prototype-storage:
     patterns:
-    # e.g. function myFunc(arg) {  }
-    - name: meta.function.js
-      match: \b(function\*?)(?:\s+([a-zA-Z_$]\w*))?\s*(\()(.*?)(\))
-      captures:
-        '1': {name: storage.type.function.js}
-        '2': {name: entity.name.function.js}
-        '3': {name: punctuation.definition.parameters.begin.js}
-        '4': {name: variable.parameter.function.js}
-        '5': {name: punctuation.definition.parameters.end.js}
-
     # e.g. Sound.prototype = {  } when extending an object
     - name: meta.prototype.declaration.js
       match: ([_$a-zA-Z][_$\w]*)\.(prototype)\s*=\s*
       captures:
         '1': {name: entity.name.class.js}
         '2': {name: support.constant.js}
-
-    # e.g. Sound.prototype.play = function() {  }
-    - name: meta.prototype.function.js
-      match: ([_$a-zA-Z][_$\w]*)\.(prototype)\.([_$a-zA-Z][_$\w]*)\s*=\s*(function\*?)?\s*(\()(.*?)(\))
-      captures:
-        '1': {name: entity.name.class.js}
-        '2': {name: support.constant.js}
-        '3': {name: entity.name.function.js}
-        '4': {name: storage.type.function.js}
-        '5': {name: punctuation.definition.parameters.begin.js}
-        '6': {name: variable.parameter.function.js}
-        '7': {name: punctuation.definition.parameters.end.js}
 
     # e.g. Sound.prototype
     - name: meta.prototype.js
@@ -212,40 +193,74 @@ repository:
         '1': {name: entity.name.class.js}
         '2': {name: support.constant.js}
 
-    # e.g. Sound.prototype.play = myfunc
+  literal-function-storage:
+    patterns:
+    # e.g. function play(arg1, arg2) {  }
     - name: meta.function.js
-      match: ([_$a-zA-Z][_$\w]*)\.(prototype)\.([_$a-zA-Z][_$\w]*)\s*=\s*
-      captures:
+      begin: \b(function\*?)(?:\s+([a-zA-Z_$][_$\w]*))?\s*
+      beginCaptures:
+        '1': {name: storage.type.function.js}
+        '2': {name: entity.name.function.js}
+      end: (?<=\))
+      patterns:
+        - include: '#function-declaration-parameters'
+
+    # e.g. Sound.prototype.play = function(arg1, arg2) {  }
+    - name: meta.prototype.function.js
+      begin: ([_$a-zA-Z][_$\w]*)\.(prototype)\.([_$a-zA-Z][_$\w]*)\s*=\s*(function\*?)\s*
+      beginCaptures:
         '1': {name: entity.name.class.js}
         '2': {name: support.constant.js}
         '3': {name: entity.name.function.js}
+        '4': {name: storage.type.function.js}
+      end: (?<=\))
+      patterns:
+        - include: '#function-declaration-parameters'
 
-    # e.g. .play = function() {  }
-    - name: meta.function.js
-      match: \.([_$a-zA-Z][_$\w]*)\s*=\s*(function\*?)( [_$a-zA-Z][_$\w]*)?\s*(\()(.*?)(\))
-      captures:
-        '1': {name: entity.name.function.js}
-        '2': {name: storage.type.function.js}
-        '3': {name: entity.name.function.js}
-        '4': {name: punctuation.definition.parameters.begin.js}
-        '5': {name: variable.parameter.function.js}
-        '6': {name: punctuation.definition.parameters.end.js}
+    # include symbol classes which not involve expressions
+    # e.g. Sound.play = function(arg1, arg2) {  }
+    - name: meta.function.static.js
+      begin: >-
+        (?x)
+          (?=
+            ([_$a-zA-Z][_$\w]*)?
+            \.([_$a-zA-Z][_$\w]*)\s*
+            =\s*
+            (function\*?)\s*
+          )
+      end: (?<=\))
+      patterns:
+        - include: '#literal-language-variable'
+        - begin: \b(function\*?)(?:\s+([a-zA-Z_$][_$\w]*))?\s*
+          beginCaptures:
+            '1': {name: storage.type.function.js}
+            '2': {name: entity.name.function.js}
+          end: (?<=\))
+          patterns:
+            - include: '#function-declaration-parameters'
 
-    # e.g. foobar: function() {  }
+    # e.g. play: function(arg1, arg2) {  }
     - name: meta.function.json.js
-      match: \b([_$a-zA-Z][_$\w]*)\s*(:)\s*\b(function\*?)?\s*(\()(.*?)(\))
-      captures:
+      begin: \b([_$a-zA-Z][_$\w]*)\s*(:)\s*\b(function\*?)\s*
+      beginCaptures:
         '1': {name: entity.name.function.js}
         '2': {name: punctuation.separator.key-value.js}
         '3': {name: storage.type.function.js}
-        '4': {name: punctuation.definition.parameters.begin.js}
-        '5': {name: variable.parameter.function.js}
-        '6': {name: punctuation.definition.parameters.end.js}
+      end: (?<=\))
+      patterns:
+        - include: '#function-declaration-parameters'
 
-    # e.g. "foo": function
+    # e.g. "play": function(arg1, arg2) {  }
     - name: meta.function.json.js
-      match: (?:((')(.*?)('))|((")(.*?)(")))\s*(:)\s*\b(function\*?)?\s*(\()(.*?)(\))
-      captures:
+      begin: |-
+        (?x)
+          (?:
+            ((')(.*?)(?<!\\)('))|
+            ((")(.*?)(?<!\\)("))
+          )\s*
+          (:)\s*
+          \b(function\*?)\s*
+      beginCaptures:
         '1': {name: string.quoted.single.js}
         '2': {name: punctuation.definition.string.begin.js}
         '3': {name: entity.name.function.js}
@@ -256,56 +271,98 @@ repository:
         '8': {name: punctuation.definition.string.end.js}
         '9': {name: punctuation.separator.key-value.js}
         '10': {name: storage.type.function.js}
-        '11': {name: punctuation.definition.parameters.begin.js}
-        '12': {name: variable.parameter.function.js}
-        '13': {name: punctuation.definition.parameters.end.js}
+      end: (?<=\))
+      patterns:
+        - include: '#function-declaration-parameters'
+
+  literal-arrow-function:
+    patterns:
+    # e.g. (args) => { }
+    - name: meta.function.arrow.js
+      begin: |-
+        (?x)
+          (?=\([^())]*\)\s*(=>))
+      end: (?<=\))\s*(=>)
+      endCaptures:
+        '1': {name: storage.type.function.arrow.js}
+      patterns:
+        - include: '#function-declaration-parameters'
 
   literal-method:
     patterns:
     - name: meta.function-call.method.with-arguments.js
-      match: (?x)(?<= \. ) ([_$a-zA-Z][_$\w]*) (?=\()
+      match: |-
+        (?x)
+          (?<=\.)
+          ([_$a-zA-Z][_$\w]*)
+          (?=\()
       captures:
         '1': {name: entity.name.function.js}
 
     - name: meta.function-call.method.without-arguments.js
-      match: (?x)(?<= \. ) ([_$a-zA-Z][_$\w]*) ((\( \s* \)))
+      match: |-
+        (?x)
+          (?<=\.)
+          ([_$a-zA-Z][_$\w]*)
+          (\(\s*\))
       captures:
         '1': {name: entity.name.function.js}
         '2': {name: meta.group.braces.round.function.arguments.js}
         '3': {name: meta.brace.round.js}
 
-    # e.g. function(one,two,...)\n?{...}
-    - name: meta.function.js
+    # ES6 methods, e.g. play(arg1, arg2) {  }
+    - name: meta.method.js
       begin: |-
         (?x)
-          \b(function\*?)
-          (?=
-            (?:\b(?:[_$a-zA-Z][_$\w]*))? \s*  # The function name
-            \(.*?\)                           # The properties that the function accepts
-          )
-      beginCaptures:
-        '1': {name: storage.type.function.js}
-      end: (?<=})(\s*\n)?
-      patterns:
-      - include: $base
-
-    # ES6 methods, e.g. abc(x, y, z){
-    - name: meta.method.js
-      match: |-
-        (?x)
-          (?<![_$\w])
           (?<!function\s)                     # An approximation due to fixed width look-behind, but usually good enough
-          ([_$a-zA-Z][_$\w]*)
-          (\()
-          (?:\s*([^()]*?))?\s*
-          (\))
+          \b([_$a-zA-Z][_$\w]*)
           \s*
-          (?={)
-      captures:
+          (?=\([^)]*\)\s*\{)
+      beginCaptures:
         '1': {name: entity.name.method.js}
-        '2': {name: punctuation.definition.parameters.begin.js}
-        '3': {name: variable.parameter.method.js}
-        '4': {name: punctuation.definition.parameters.end.js}
+      end: (?<=\))
+      patterns:
+        - include: '#function-declaration-parameters'
+
+  literal-language-variable:
+    patterns:
+    - name: variable.language.arguments.js
+      match: (?<!\.)\b(arguments)\b
+
+    - name: variable.language.super.js
+      match: (?<!\.)\b(super)\b
+
+    - name: variable.language.this.js
+      match: (?<!\.)\b(this)\b
+
+    - name: variable.language.self.js
+      match: (?<!\.)\b(self)\b
+
+    - name: variable.language.proto.js
+      match: (?<=\.)\b(__proto__)\b
+
+    - name: variable.language.constructor.js
+      match: (?<=\.)\b(constructor)\b
+
+    - name: variable.language.prototype.js
+      match: (?<=\.)\b(prototype)\b
+
+  literal-language-constant:
+    patterns:
+    - name: constant.language.boolean.true.js
+      match: \btrue\b
+
+    - name: constant.language.boolean.false.js
+      match: \bfalse\b
+
+    - name: constant.language.null.js
+      match: \bnull\b
+
+    - name: constant.language.undefined.js
+      match: \bundefined\b
+
+    - name: constant.language.nan.js
+      match: \bNaN\b
 
   literal-keywords:
     patterns:
@@ -316,8 +373,9 @@ repository:
       end: (?![_$a-zA-Z][_$\w.]*)
       patterns:
         - include: '#support'
-        - name: entity.name.type.new.js
-          match: ([_$a-zA-Z][_$\w.]*)
+        - match: ([_$a-zA-Z][_$\w.]*\.)?([_$a-zA-Z][_$\w]*)
+          captures:
+            '2': {name: entity.name.type.new.js}
 
     - name: storage.type.js
       match: \b(var|let|const)\b
@@ -339,42 +397,6 @@ repository:
 
     - name: keyword.operator.js
       match: \b(delete|in(stanceof)?|of|new|typeof|void|with)\b
-
-    - name: constant.language.boolean.true.js
-      match: \btrue\b
-
-    - name: constant.language.boolean.false.js
-      match: \bfalse\b
-
-    - name: constant.language.null.js
-      match: \bnull\b
-
-    - name: constant.language.undefined.js
-      match: \bundefined\b
-
-    - name: constant.language.nan.js
-      match: \bNaN\b
-
-    - name: variable.language.arguments.js
-      match: (?<!\.)\b(arguments)\b
-
-    - name: variable.language.super.js
-      match: (?<!\.)\b(super)\b
-
-    - name: variable.language.this.js
-      match: (?<!\.)\b(this)\b
-
-    - name: storage.self.js
-      match: (?<!\.)\b(self)\b
-
-    - name: variable.language.proto.js
-      match: (?<=\.)\b(__proto__)\b
-
-    - name: variable.language.constructor.js
-      match: (?<=\.)\b(constructor)\b
-
-    - name: variable.language.prototype.js
-      match: (?<=\.)\b(prototype)\b
 
     - name: keyword.operator.js
       match: '!|%|&|\*|\-\-|\-|\+\+|\+|~|===|==|=|!=|!==|<=|>=|<<=|>>=|>>>=|<>|<|>|!|&&|\|\||\?\:|\*=|/=|%=|\+=|\-=|&=|\^='
@@ -522,7 +544,7 @@ repository:
         endCaptures:
           '0': {name: punctuation.quasi.element.end.js}
         patterns:
-        - include: $base
+        - include: source.js
 
   literal-regex:
     patterns:
@@ -593,7 +615,7 @@ repository:
         '1': {name: variable.other.object.js}
 
     - name: meta.property.js
-      match: (?<=[\.\]])\s*[_$a-zA-Z][_$\w]*
+      match: (?<=[\.])\s*[_$a-zA-Z][_$\w]*
       captures:
         '0': {name: variable.other.property.js}
 
@@ -622,7 +644,7 @@ repository:
       captures:
         '0': {name: punctuation.definition.comment.js}
       patterns:
-      - include: $base
+      - include: source.js
 
     - name: keyword.control.conditional.js
       match: (@)(if|elif|else|end)

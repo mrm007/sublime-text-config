@@ -2,5 +2,7 @@
 	"indent": 4,
 	"dasherize": false,
 	"old": false,
-	"path": false
+	"path": false,
+	"beautifyOnSave": false,
+	"blanklineBetweenSelectors": false
 }

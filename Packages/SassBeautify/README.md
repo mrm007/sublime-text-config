@@ -8,7 +8,7 @@ A Sublime Text plugin that beautifies Sass files. (Compatible with Sublime Text 
 
 ## Dependencies
 
-You need to have sass installed. Read the [sass download page](http://sass-lang.com/download.html) to view the installation options.
+As this plugin uses `sass-convert`, you need to have sass installed. Read the [sass download page](http://sass-lang.com/download.html) to view the installation options.
 
 ## Installation
 
@@ -63,34 +63,39 @@ The following settings can be adjusted:
 
 ```javascript
 {
-  "indent": 4,        // How many spaces to use for each level of indentation. "t" means use hard tabs.
-  "dasherize": false, // Convert underscores to dashes.
-  "old": false,       // Output the old-style ":prop val" property syntax. Only meaningful when generating Sass.
-  "path": false       // Custom environment PATH.
+  // How many spaces to use for each level of indentation. "t" means use hard tabs.
+  "indent": 4,
+  // Convert underscores to dashes.
+  "dasherize": false,
+  // Output the old-style ":prop val" property syntax. Only meaningful when generating Sass.
+  "old": false,
+  // Custom environment PATH.
+  "path": false,
+  // Beautify the sass file after saving it?
+  "beautifyOnSave": false,
+  // Insert a blank line between selectors (only valid for SCSS files).
+  "blanklineBetweenSelectors": false
 }
 ```
 
-## How it works
-
-This plugin is simply a wrapper around the `sass-convert` utility. The `sass-convert` utility will *compile your Sass/Scss to Sass/Scss*.
-
 ## Issues with ruby, Sass and your PATH
 
-If you installed ruby and sass via a version manager tool like [RVM](https://rvm.io/), or via an installer like [ruby installer](http://rubyinstaller.org/), then you're likely to encounter issues with running Sass from Sublime Text. The issue boils down to the ruby/sass executable paths not existing in your global environment PATH variable. 
+If you installed ruby and sass via a version manager tool like [RVM](https://rvm.io/), [rbenv](https://github.com/sstephenson/rbenv) or via an installer like [ruby installer](http://rubyinstaller.org/), then you're likely to encounter issues with running Sass from Sublime Text. The issue boils down to the ruby/sass executable paths not existing in your global environment PATH variable.
 
-### Compatibility with RVM 
+### Compatibility with RVM/rbenv
 
-RVM uses a shell login script to modify the environment PATH, so you will need to manually add this path to the package settings if you want this plugin to use the same ruby and gem versions. 
+RVM/rbenv uses a shell login script (usually added to your ~/.bash_profile) to modify the environment PATH, so you will need to manually add this path to the package settings if you want this plugin to use the same ruby and gem versions.
 
-To get this plugin to work with RVM, follow the steps below:
+To get this plugin to work with RVM/rbenv, follow the steps below:
 
-1. Open up terminal.
+1. Open up terminal
 2. Run the following `echo $PATH`
-3. Copy the entire PATH and add this to the package 'path' setting.
+3. Copy the *entire* PATH and add this to the package 'path' setting
+ * For example: `/Users/richard/.rbenv/shims:/usr/local/opt/ruby/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin`
 
 ### Compatibility with RubyInstaller
 
-During the install process, there should be an option to add ruby to your environment PATH. Ensure this option is selected. 
+During the install process, there should be an option to add ruby to your environment PATH. Ensure this option is selected.
 
 ## Issues
 
@@ -98,9 +103,18 @@ This plugin should work on Linux (tested on Ubuntu 12.04), Windows (tested on Wi
 
 Please [create an issue](https://github.com/badsyntax/SassBeautify/issues) if you find it doesn't work as expected on your setup.
 
+### Known issues
+
+* [Hyphens in keyword arguments to mixins are converted to underscores](https://github.com/badsyntax/SassBeautify/issues/31) (fixed in Sass master, awaiting release).
+* [Incorrect handling of inline comments within multiline comments](https://github.com/badsyntax/SassBeautify/issues/24) (fixed in Sass master, awaiting release)
+
 ## Thanks
 
 Thank you to all the people who have tested and reported issues. A special thanks to [@WilliamVercken](https://github.com/WilliamVercken) and [@scotthovestadt](https://github.com/scotthovestadt).
+
+## Bonus
+
+This plugin will also [beautify CSS files](https://github.com/badsyntax/SassBeautify/issues/27)!
 
 ## License
 

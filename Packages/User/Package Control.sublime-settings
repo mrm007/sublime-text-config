@@ -1,12 +1,11 @@
 {
 	"auto_upgrade_last_run": null,
-	"http_proxy": "http://127.0.0.1:3128",
-	"https_proxy": "http://127.0.0.1:3128",
 	"installed_packages":
 	[
 		"CoffeeScript",
 		"Compass",
 		"CSSTidy",
+		"DashDoc",
 		"DocBlockr",
 		"Emmet",
 		"Focus",

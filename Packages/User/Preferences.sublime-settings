@@ -1,6 +1,6 @@
 {
 	"bold_folder_labels": true,
-	"color_scheme": "Packages/Color Scheme - Default/iPlastic.tmTheme",
+	"color_scheme": "Packages/Tomorrow Color Schemes/Tomorrow.tmTheme",
 	"drag_text": false,
 	"draw_minimap_border": true,
 	"draw_white_space": "selection",
@@ -16,7 +16,9 @@
 	],
 	"reveal-on-activate": true,
 	"shift_tab_unindent": true,
+	"soda_folder_icons": true,
 	"tab_size": 2,
+	"theme": "Soda Light 3.sublime-theme",
 	"tree_animation_enabled": false,
 	"word_wrap": true
 }

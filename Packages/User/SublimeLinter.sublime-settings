@@ -2,7 +2,8 @@
 	"sublimelinter": "save-only",
 	"sublimelinter_mark_style": "outline",
 	"sublimelinter_notes": true,
-	"sublimelinter_gutter_marks": false,
+	"sublimelinter_gutter_marks": true,
+	"sublimelinter_gutter_marks_theme": "bright",
 	"sublimelinter_executable_map": {
 		"html": "D:\\bin\\tidy.exe"
 	},

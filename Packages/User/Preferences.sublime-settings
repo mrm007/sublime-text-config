@@ -1,10 +1,15 @@
 {
+	"auto_complete_commit_on_tab": true,
+	"auto_complete_with_fields": true,
 	"bold_folder_labels": true,
-	"color_scheme": "Packages/Tomorrow Color Schemes/Tomorrow.tmTheme",
+	"color_scheme": "Packages/Dayle Rees Color Schemes/sublime/light/snappy-light.tmTheme",
+	"copy_with_empty_selection": false,
 	"drag_text": false,
 	"draw_minimap_border": true,
 	"draw_white_space": "selection",
+	"ensure_newline_at_eof_on_save": true,
 	"fade_fold_buttons": false,
+	"find_selected_text": true,
 	"font_face": "Inconsolata",
 	"font_size": 14,
 	"highlight_line": true,
@@ -14,11 +19,18 @@
 		"Vintage",
 		"LiveReload"
 	],
+	"indent_guide_options":
+	[
+		"draw_normal",
+		"draw_active"
+	],
+	"open_files_in_new_window": false,
 	"reveal-on-activate": true,
 	"shift_tab_unindent": true,
 	"soda_folder_icons": true,
 	"tab_size": 2,
 	"theme": "Soda Light 3.sublime-theme",
 	"tree_animation_enabled": false,
+	"trim_automatic_white_space": false,
 	"word_wrap": true
 }

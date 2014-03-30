@@ -1,3 +1,5 @@
 {
-	"indent": "t"
+	"indent": "t",
+	"path": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/opt/ruby/bin",
+	"blanklineBetweenSelectors": true
 }

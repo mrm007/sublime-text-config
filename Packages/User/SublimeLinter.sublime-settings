@@ -9,5 +9,6 @@
 	},
 	"jshint_options": {
 		"indent": 1
-	}
+	},
+	"annotations": ["TODO", "README", "FIXME", "XXX"]
 }

@@ -9,7 +9,7 @@ import subprocess
 import threading
 import re
 
-__version__ = '1.2.1'
+__version__ = '1.3.0'
 __author__ = 'Richard Willis'
 __email__ = 'willis.rh@gmail.com'
 __copyright__ = 'Copyright 2013, Richard Willis'
@@ -185,10 +185,6 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         # Ensure we're working with unix-style newlines.
         # Fixes issue on windows with Sass < v3.2.10.
         output = '\n'.join(output.splitlines())
-
-        # Insert a blank line between selectors. (Issue #30)
-        if self.get_type() == 'scss' and self.settings.get('blanklineBetweenSelectors', False):
-            output = re.sub(r'\n\n\n', '\n\n', re.sub(r'(.*)\{', r'\n\1{', output).strip())
 
         # Update the text in the editor
         self.view.run_command('sass_beautify_replace_text', {'text': output})

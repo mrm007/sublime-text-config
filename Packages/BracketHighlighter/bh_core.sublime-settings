@@ -181,7 +181,7 @@
             "close": "(\\))",
             "style": "round",
             "scope_exclude_exceptions": ["text.tex string.other.math"],
-            "scope_exclude": ["string", "comment"],
+            "scope_exclude": ["string", "comment", "punctuation.definition.case-pattern.shell"],
             "language_filter": "blacklist",
             "language_list": ["Plain text"],
             "find_in_sub_search": "true",
@@ -209,7 +209,7 @@
             "style": "tag",
             "scope_exclude": ["string", "comment"],
             "language_filter": "whitelist",
-            "language_list": ["HTML", "HTML 5", "XML", "PHP"],
+            "language_list": ["HTML", "HTML 5", "XML", "PHP", "Handlebars"],
             "plugin_library": "bh_modules.tags",
             "find_in_sub_search": "only",
             "enabled": false
@@ -246,7 +246,7 @@
             "style": "angle",
             "scope_exclude": ["string", "comment", "keyword.operator", "source.ruby.rails.embedded.html", "source.ruby.embedded.html"],
             "language_filter": "whitelist",
-            "language_list": ["HTML", "HTML 5", "XML", "PHP", "HTML (Rails)", "HTML (Jinja Templates)", "HTML (Twig)", "HTML+CFML", "ColdFusion", "ColdFusionCFC", "laravel-blade"],
+            "language_list": ["HTML", "HTML 5", "XML", "PHP", "HTML (Rails)", "HTML (Jinja Templates)", "HTML (Twig)", "HTML+CFML", "ColdFusion", "ColdFusionCFC", "laravel-blade", "Handlebars"],
             "plugin_library": "bh_modules.tags",
             "enabled": true
         },
@@ -319,6 +319,18 @@
             "language_filter": "whitelist",
             "plugin_library": "bh_modules.erlangcase",
             "language_list": ["Erlang", "HTML (Erlang)"],
+            "enabled": true
+        },
+        //Bash
+        {
+            "name": "bash",
+            "open": "(?:(?<!\\\\\\n)(?:;|^)\\s*)\\b(if|case|while|select|until|for)\\s",
+            "close": "(?:(?<!\\\\\\n)(?:;|^)\\s*)\\b(fi|esac|done)(?:\\s|$)",
+            "style": "default",
+            "scope_exclude": ["string", "comment"],
+            "plugin_library": "bh_modules.bashsupport",
+            "language_filter": "whitelist",
+            "language_list": ["Shell-Unix-Generic"],
             "enabled": true
         }
     ],
@@ -405,7 +417,7 @@
     // Determine which style of tag-matching to use in which syntax
     "tag_mode": {
         "xhtml": ["XML"],
-        "html": ["HTML", "HTML 5", "PHP", "HTML (Jinja Templates)", "HTML (Rails)", "HTML (Twig)", "laravel-blade"],
+        "html": ["HTML", "HTML 5", "PHP", "HTML (Jinja Templates)", "HTML (Rails)", "HTML (Twig)", "laravel-blade", "Handlebars"],
         "cfml": ["HTML+CFML", "ColdFusion", "ColdFusionCFC"]
     }
 }

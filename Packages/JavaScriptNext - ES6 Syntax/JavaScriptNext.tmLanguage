@@ -628,7 +628,7 @@
 			<array>
 				<dict>
 					<key>begin</key>
-					<string>\b(function\s*\*?)(?:\s*([a-zA-Z_$][_$\w]*))?\s*</string>
+					<string>\b(function(?:\s*\*|(?=\s|[(])))(?:\s*([a-zA-Z_$][_$\w]*))?\s*</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>1</key>
@@ -656,7 +656,7 @@
 				</dict>
 				<dict>
 					<key>begin</key>
-					<string>([_$a-zA-Z][_$\w]*)\.(prototype)\.([_$a-zA-Z][_$\w]*)\s*=\s*(function\s*\*?)\s*</string>
+					<string>([_$a-zA-Z][_$\w]*)\.(prototype)\.([_$a-zA-Z][_$\w]*)\s*=\s*(function(?:\s*\*|(?=\s|[(])))\s*</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>1</key>
@@ -713,7 +713,7 @@
 						</dict>
 						<dict>
 							<key>begin</key>
-							<string>\b(function\s*\*?)(?:\s*([a-zA-Z_$][_$\w]*))?\s*</string>
+							<string>\b(function(?:\s*\*|(?=\s|[(])))(?:\s*([a-zA-Z_$][_$\w]*))?\s*</string>
 							<key>beginCaptures</key>
 							<dict>
 								<key>1</key>
@@ -741,7 +741,7 @@
 				</dict>
 				<dict>
 					<key>begin</key>
-					<string>\b([_$a-zA-Z][_$\w]*)\s*(:)\s*\b(function\s*\*?)\s*</string>
+					<string>\b([_$a-zA-Z][_$\w]*)\s*(:)\s*\b(function(?:\s*\*|(?=\s|[(])))\s*</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>1</key>
@@ -780,7 +780,7 @@
     ((")(.*?)(?&lt;!\\)("))
   )\s*
   (:)\s*
-  \b(function\s*\*?)\s*</string>
+  \b(function(?:\s*\*|(?=\s|[(])))\s*</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>1</key>

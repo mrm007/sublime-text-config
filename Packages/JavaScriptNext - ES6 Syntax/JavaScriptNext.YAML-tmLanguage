@@ -197,7 +197,7 @@ repository:
     patterns:
     # e.g. function play(arg1, arg2) {  }
     - name: meta.function.js
-      begin: \b(function\s*\*?)(?:\s*([a-zA-Z_$][_$\w]*))?\s*
+      begin: \b(function(?:\s*\*|(?=\s|[(])))(?:\s*([a-zA-Z_$][_$\w]*))?\s*
       beginCaptures:
         '1': {name: storage.type.function.js}
         '2': {name: entity.name.function.js}
@@ -207,7 +207,7 @@ repository:
 
     # e.g. Sound.prototype.play = function(arg1, arg2) {  }
     - name: meta.prototype.function.js
-      begin: ([_$a-zA-Z][_$\w]*)\.(prototype)\.([_$a-zA-Z][_$\w]*)\s*=\s*(function\s*\*?)\s*
+      begin: ([_$a-zA-Z][_$\w]*)\.(prototype)\.([_$a-zA-Z][_$\w]*)\s*=\s*(function(?:\s*\*|(?=\s|[(])))\s*
       beginCaptures:
         '1': {name: entity.name.class.js}
         '2': {name: support.constant.js}
@@ -231,7 +231,7 @@ repository:
       end: (?<=\))
       patterns:
         - include: '#literal-language-variable'
-        - begin: \b(function\s*\*?)(?:\s*([a-zA-Z_$][_$\w]*))?\s*
+        - begin: \b(function(?:\s*\*|(?=\s|[(])))(?:\s*([a-zA-Z_$][_$\w]*))?\s*
           beginCaptures:
             '1': {name: storage.type.function.js}
             '2': {name: entity.name.function.js}
@@ -241,7 +241,7 @@ repository:
 
     # e.g. play: function(arg1, arg2) {  }
     - name: meta.function.json.js
-      begin: \b([_$a-zA-Z][_$\w]*)\s*(:)\s*\b(function\s*\*?)\s*
+      begin: \b([_$a-zA-Z][_$\w]*)\s*(:)\s*\b(function(?:\s*\*|(?=\s|[(])))\s*
       beginCaptures:
         '1': {name: entity.name.function.js}
         '2': {name: punctuation.separator.key-value.js}
@@ -259,7 +259,7 @@ repository:
             ((")(.*?)(?<!\\)("))
           )\s*
           (:)\s*
-          \b(function\s*\*?)\s*
+          \b(function(?:\s*\*|(?=\s|[(])))\s*
       beginCaptures:
         '1': {name: string.quoted.single.js}
         '2': {name: punctuation.definition.string.begin.js}

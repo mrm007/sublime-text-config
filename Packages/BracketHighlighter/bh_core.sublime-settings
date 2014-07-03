@@ -2,9 +2,6 @@
     //Debug logging
     "debug_enable": false,
 
-    // Path to find icons at
-    "icon_path": "BracketHighlighter/icons",
-
     // When only either the left or right bracket can be found
     // this defines if the unmatched bracket should be shown.
     "show_unmatched" : true,
@@ -19,6 +16,7 @@
 
     // High visibility style and color for high visibility mode
     // (solid|outline|underline)
+    // ST3 has additional options of (thin_underline|squiggly|stippled)
     "high_visibility_style": "outline",
 
     // (scope|__default__|__bracket__)
@@ -38,6 +36,10 @@
 
     // Set max number of multi-select brackets that will be searched automatically
     "auto_selection_threshold" : 10,
+
+    // Enable this to completely kill highlighting if "auto_selection_threshold"
+    // is exceeded.  Default is to highlight up to the "auto_selection_threshold".
+    "kill_highlight_on_threshold": true,
 
     // Disable gutter icons when doing multi-select
     "no_multi_select_icons": false,
@@ -81,7 +83,7 @@
             "style": "single_quote",
             "scopes": ["string"],
             "language_filter": "blacklist",
-            "language_list": ["Plain text"],
+            "language_list": ["Plain text", "Hex"],
             "sub_bracket_search": "true",
             "enabled": true
         },
@@ -92,7 +94,7 @@
             "style": "double_quote",
             "scopes": ["string"],
             "language_filter": "blacklist",
-            "language_list": ["Plain text"],
+            "language_list": ["Plain text", "Hex"],
             "sub_bracket_search": "true",
             "enabled": true
         },
@@ -170,7 +172,7 @@
             "scope_exclude": ["string", "comment"],
             "scope_exclude_exceptions": ["text.tex string.other.math"],
             "language_filter": "blacklist",
-            "language_list": ["Plain text"],
+            "language_list": ["Plain text", "Hex"],
             "find_in_sub_search": "true",
             "ignore_string_escape": true,
             "enabled": true
@@ -183,7 +185,7 @@
             "scope_exclude_exceptions": ["text.tex string.other.math"],
             "scope_exclude": ["string", "comment", "punctuation.definition.case-pattern.shell"],
             "language_filter": "blacklist",
-            "language_list": ["Plain text"],
+            "language_list": ["Plain text", "Hex"],
             "find_in_sub_search": "true",
             "ignore_string_escape": true,
             "enabled": true
@@ -196,7 +198,7 @@
             "scope_exclude": ["string", "comment"],
             "scope_exclude_exceptions": ["text.tex string.other.math"],
             "language_filter": "blacklist",
-            "language_list": ["Plain text"],
+            "language_list": ["Plain text", "Hex"],
             "find_in_sub_search": "true",
             "ignore_string_escape": true,
             "enabled": true
@@ -246,7 +248,7 @@
             "style": "angle",
             "scope_exclude": ["string", "comment", "keyword.operator", "source.ruby.rails.embedded.html", "source.ruby.embedded.html"],
             "language_filter": "whitelist",
-            "language_list": ["HTML", "HTML 5", "XML", "PHP", "HTML (Rails)", "HTML (Jinja Templates)", "HTML (Twig)", "HTML+CFML", "ColdFusion", "ColdFusionCFC", "laravel-blade", "Handlebars"],
+            "language_list": ["HTML", "HTML 5", "XML", "PHP", "HTML (Rails)", "HTML (Jinja Templates)", "HTML (Twig)", "HTML+CFML", "ColdFusion", "ColdFusionCFC", "laravel-blade", "Handlebars", "AngularJS"],
             "plugin_library": "bh_modules.tags",
             "enabled": true
         },
@@ -291,10 +293,10 @@
             "name": "c_compile_switch",
             "open": "(\\#(?:if|ifdef|ifndef))\\b",
             "close": "(\\#endif)\\b",
-            "style": "default",
+            "style": "c_define",
             "scope_exclude": ["string", "comment"],
             "language_filter": "whitelist",
-            "language_list": ["C++", "C", "Objective-C"],
+            "language_list": ["C++", "C", "Objective-C", "CCpp"],
             "enabled": true
         },
         // PHP conditional keywords
@@ -324,16 +326,36 @@
         //Bash
         {
             "name": "bash",
-            "open": "(?:(?<!\\\\\\n)(?:;|^)\\s*)\\b(if|case|while|select|until|for)\\s",
-            "close": "(?:(?<!\\\\\\n)(?:;|^)\\s*)\\b(fi|esac|done)(?:\\s|$)",
+            "open": "(?:(?<!\\\\\\n)(?:;|^|&|\\|)\\s*)\\b(if|case|while|select|until|for)\\s",
+            "close": "(?:(?<!\\\\\\n)(?:;|^)\\s*)\\b(fi|esac|done)(?=;|\\s|$)",
             "style": "default",
             "scope_exclude": ["string", "comment"],
             "plugin_library": "bh_modules.bashsupport",
             "language_filter": "whitelist",
             "language_list": ["Shell-Unix-Generic"],
             "enabled": true
+        },
+        //Fish shell
+        {
+            "name": "fish",
+            "open": "(?:(?<!\\\\\\n)(?:;|^|&|\\||and|or|not)\\s*)\\b(begin|if|while|for|switch|function)(?:;|\\s)",
+            "close": "(?:(?<!\\\\\\n)(?:;|^)\\s*)\\b(end)(?=;|\\s|$)",
+            "style": "default",
+            "scope_exclude": ["string", "comment"],
+            "language_filter": "whitelist",
+            "language_list": ["fish"],
+            "enabled": true
         }
     ],
+
+    // user_scope_brackets and user_brackets will be appended
+    // to the tail of scope_brackets and brackets respectively
+    // If you have custom rules that you don't want to commit to
+    // the offial list, and do not need to be inserted before
+    // one of the offical defintions, this is a good place to
+    // put yours rules and keep in sync with the defaults.
+    "user_scope_brackets": [],
+    "user_brackets": [],
 
     // Define region highlight styles
     "bracket_styles": {
@@ -386,8 +408,14 @@
         },
         "tag": {
             "icon": "tag",
+            // "endpoints": true,
             // "color": "brackethighlighter.tag",
             "style": "outline"
+        },
+        "c_define": {
+            "icon": "hash"
+            // "color": "brackethighlighter.c_define",
+            // "style": "underline"
         },
         "single_quote": {
             "icon": "single_quote"
@@ -417,7 +445,7 @@
     // Determine which style of tag-matching to use in which syntax
     "tag_mode": {
         "xhtml": ["XML"],
-        "html": ["HTML", "HTML 5", "PHP", "HTML (Jinja Templates)", "HTML (Rails)", "HTML (Twig)", "laravel-blade", "Handlebars"],
+        "html": ["HTML", "HTML 5", "PHP", "HTML (Jinja Templates)", "HTML (Rails)", "HTML (Twig)", "laravel-blade", "Handlebars", "AngularJS"],
         "cfml": ["HTML+CFML", "ColdFusion", "ColdFusionCFC"]
     }
 }

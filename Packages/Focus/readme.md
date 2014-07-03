@@ -7,9 +7,13 @@ For when you need to edit a lot of inline text without being distracted by code 
 ![Focus light](screenshot-light.png)
 ![Focus dark](screenshot-dark.png)
 
-Works perfectly with LaTeX
+#### Works perfectly with Markdown
 
-![Focus dark LaTeX](screenshot-dark-latex.png)
+![Focus dark - Markdown](screenshot-dark-markdown.png)
+
+#### And LaTeX
+
+![Focus dark - LaTeX](screenshot-dark-latex.png)
 
 
 ## Install
@@ -47,6 +51,11 @@ A lot more editors support the `.tmTheme` format. Google it if you're not using 
 I would be more than happy to accept PRs for ports to other editors that doesn't support `.tmTheme`.
 
 
+## Dev
+
+Click on some syntax then press Ctrl+Shift+P to see the scope in the statusbar.
+
+
 ## License
 
-[MIT](http://opensource.org/licenses/MIT) © [Sindre Sorhus](http://sindresorhus.com)
+MIT © [Sindre Sorhus](http://sindresorhus.com)

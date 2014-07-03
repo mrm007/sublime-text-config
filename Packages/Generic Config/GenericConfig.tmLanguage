@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
 	<key>fileTypes</key>
@@ -44,7 +44,7 @@
 			<key>comment</key>
 			<string>One line comment</string>
 			<key>match</key>
-			<string>(?:(?:^\s*)|\s+)(?:(#.*)|(--.*)|([^:]//.*))$
+			<string>(?:(?:^\s*)|\s+)(?:(#.*)|(--\s+.*)|([^:]//.*))$
 ?</string>
 			<key>name</key>
 			<string>meta.comment.genconfig</string>
@@ -81,6 +81,14 @@
 			<string>\b(?&lt;!-)([oO]n|[oO]ff|ON|OFF|[yY]es|[nN]o|YES|NO|[nN]ull|NULL|[nN]one|NONE|nan|NaN|NAN)(?!-)\b</string>
 			<key>name</key>
 			<string>constant.language.genconfig</string>
+		</dict>
+		<dict>
+			<key>include</key>
+			<string>#quoted_single_string</string>
+		</dict>
+		<dict>
+			<key>include</key>
+			<string>#quoted_double_string</string>
 		</dict>
 		<dict>
 			<key>include</key>
@@ -208,6 +216,38 @@
 				<dict>
 					<key>include</key>
 					<string>#double_string</string>
+				</dict>
+			</array>
+		</dict>
+		<key>quoted_double_string</key>
+		<dict>
+			<key>begin</key>
+			<string>\\"</string>
+			<key>end</key>
+			<string>\\"</string>
+			<key>name</key>
+			<string>string.quoted.qdouble.genconfig</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#quoted_double_string</string>
+				</dict>
+			</array>
+		</dict>
+		<key>quoted_single_string</key>
+		<dict>
+			<key>begin</key>
+			<string>\\'</string>
+			<key>end</key>
+			<string>\\'</string>
+			<key>name</key>
+			<string>string.quoted.qsignle.genconfig</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#quoted_single_string</string>
 				</dict>
 			</array>
 		</dict>

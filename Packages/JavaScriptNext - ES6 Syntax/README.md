@@ -7,7 +7,7 @@ If you haven't already, [install Package Control](https://sublime.wbond.net/inst
 
 To set this as your default JavaScript syntax, open a javascript file, then select `View -> Syntax -> Open all with current extension as... -> JavascriptNext`.
 
-You may also need to change the ColorScheme, `Preferences -> Color Scheme --> JavaScriptNext - ES6 Syntax`.
+You may also need to change the ColorScheme, `Preferences -> Color Scheme --> JavaScriptNext`.
 
 ## Screenshots
 

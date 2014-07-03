@@ -13,17 +13,45 @@ patterns:
 - include: '#special'
 
 repository:
+  core:
+    patterns:
+    - include: '#leading-space'
+
+    # literals
+    - include: '#literal-regex'               # before operators to avoid ambiguities
+    - include: '#literal-number'
+    - include: '#literal-quasi'
+    - include: '#literal-language-constant'
+
+    # keywords/operators
+    - include: '#literal-keywords'
+
+    # modules/classes/functions
+    - include: '#literal-class'
+    - include: '#literal-module'
+    - include: '#literal-arrow-function-storage'
+    - include: '#literal-function-storage'
+    - include: '#literal-prototype-storage'   # after literal-function-storage, which includes some prototype strings
+    - include: '#literal-method-storage'      # before function calls, after literal-function-storage, to differentiate methods from them
+
+    # after literal-function-storage which requires the below in some cases
+    - include: '#literal-string'
+    - include: '#literal-language-variable'
+
+    # function calls
+    - include: '#literal-method-call'
+    - include: '#literal-function-call'
+
+    # punctuation
+    - include: '#literal-labels'
+    - include: '#literal-variable'
+    - include: '#literal-punctuation'
+
+    # brackets
+    - include: '#brackets'
+
   brackets:
     patterns:
-    - name: meta.function-call.method.with-arguments.js
-      match: >-
-        (?x)
-          (?<=\.)
-          ([_$a-zA-Z][_$\w]*)?
-          (?=\()
-      captures:
-        '1': {name: entity.name.function.js}
-
     - name: meta.group.braces.round
       begin: (\()
       beginCaptures:
@@ -88,42 +116,6 @@ repository:
           match: ','
         - include: '#comments'
 
-  core:
-    patterns:
-    - include: '#leading-space'
-
-    # literals
-    - include: '#literal-regex'               # before operators to avoid ambiguities
-    - include: '#literal-number'
-    - include: '#literal-quasi'
-    - include: '#literal-language-constant'
-
-    # keywords/operators
-    - include: '#literal-keywords'
-
-    # modules/classes/functions
-    - include: '#literal-class'
-    - include: '#literal-module'
-    - include: '#literal-arrow-function'
-    - include: '#literal-function-storage'
-    - include: '#literal-method'              # before function calls & after function declarations, to differentiate methods from them
-    - include: '#literal-prototype-storage'   # after literal-function-storage, which includes some prototype strings
-
-    # after literal-function-storage which requires the below in some cases
-    - include: '#literal-string'
-    - include: '#literal-language-variable'
-
-    # function calls
-    - include: '#literal-function-call'
-
-    # punctuation
-    - include: '#literal-labels'
-    - include: '#literal-variable'
-    - include: '#literal-punctuation'
-
-    # brackets
-    - include: '#brackets'
-
   literal-module:
     patterns:
     # module names are defined using strings
@@ -168,15 +160,6 @@ repository:
       patterns:
         - include: '#function-declaration-parameters'
 
-  literal-function-call:
-    patterns:
-    - name: meta.function-call.static.with-arguments.js
-      begin: (?=[_$a-zA-Z][_$\w]*\s*\()
-      end: (?=\()
-      patterns:
-      - name: entity.name.function.js
-        match: ([_$a-zA-Z][_$\w]*)?
-
   literal-prototype-storage:
     patterns:
     # e.g. Sound.prototype = {  } when extending an object
@@ -217,27 +200,16 @@ repository:
       patterns:
         - include: '#function-declaration-parameters'
 
-    # include symbol classes which not involve expressions
     # e.g. Sound.play = function(arg1, arg2) {  }
     - name: meta.function.static.js
-      begin: >-
-        (?x)
-          (?=
-            ([_$a-zA-Z][_$\w]*)?
-            \.([_$a-zA-Z][_$\w]*)\s*
-            =\s*
-            (function\s*\*?)\s*
-          )
+      begin: ([A-Z][_$\w]*)?\.([_$a-zA-Z][_$\w]*)\s*=\s*(function(?:\s*\*|(?=\s|[(])))\s*
+      beginCaptures:
+        '1': {name: entity.name.class.js}
+        '2': {name: entity.name.function.js}
+        '3': {name: storage.type.function.js}
       end: (?<=\))
       patterns:
-        - include: '#literal-language-variable'
-        - begin: \b(function(?:\s*\*|(?=\s|[(])))(?:\s*([a-zA-Z_$][_$\w]*))?\s*
-          beginCaptures:
-            '1': {name: storage.type.function.js}
-            '2': {name: entity.name.function.js}
-          end: (?<=\))
-          patterns:
-            - include: '#function-declaration-parameters'
+        - include: '#function-declaration-parameters'
 
     # e.g. play: function(arg1, arg2) {  }
     - name: meta.function.json.js
@@ -275,7 +247,7 @@ repository:
       patterns:
         - include: '#function-declaration-parameters'
 
-  literal-arrow-function:
+  literal-arrow-function-storage:
     patterns:
     # e.g. (args) => { }
     - name: meta.function.arrow.js
@@ -288,28 +260,8 @@ repository:
       patterns:
         - include: '#function-declaration-parameters'
 
-  literal-method:
+  literal-method-storage:
     patterns:
-    - name: meta.function-call.method.with-arguments.js
-      match: |-
-        (?x)
-          (?<=\.)
-          ([_$a-zA-Z][_$\w]*)
-          (?=\()
-      captures:
-        '1': {name: entity.name.function.js}
-
-    - name: meta.function-call.method.without-arguments.js
-      match: |-
-        (?x)
-          (?<=\.)
-          ([_$a-zA-Z][_$\w]*)
-          (\(\s*\))
-      captures:
-        '1': {name: entity.name.function.js}
-        '2': {name: meta.group.braces.round.function.arguments.js}
-        '3': {name: meta.brace.round.js}
-
     # ES6 methods, e.g. play(arg1, arg2) {  }
     - name: meta.method.js
       begin: |-
@@ -323,6 +275,69 @@ repository:
       end: (?<=\))
       patterns:
         - include: '#function-declaration-parameters'
+
+  literal-function-call:
+    patterns:
+    - name: meta.function-call.without-arguments.js
+      match: |-
+        (?x)
+          ([_$a-zA-Z][_$\w]*)\s*
+          (\(\s*\))
+      captures:
+        '1': {name: entity.name.function.js}
+        '2': {name: meta.group.braces.round.function.arguments.js}
+
+    - name: meta.function-call.with-arguments.js
+      match: |-
+        (?x)
+          ([_$a-zA-Z][_$\w]*)\s*
+          (?=\()
+      captures:
+        '1': {name: entity.name.function.js}
+
+  literal-method-call:
+    patterns:
+    - name: meta.function-call.static.without-arguments.js
+      match: |-
+        (?x)
+          (?:(?<=\.)|\b)
+          ([A-Z][_$\w]*)\s*\.
+          ([_$a-zA-Z][_$\w]*)\s*
+          (\(\s*\))
+      captures:
+        '1': {name: variable.other.class.js}
+        '2': {name: entity.name.function.js}
+        '3': {name: meta.group.braces.round.function.arguments.js}
+
+    - name: meta.function-call.static.with-arguments.js
+      match: |-
+        (?x)
+          (?:(?<=\.)|\b)
+          ([A-Z][_$\w]*)\s*\.
+          ([_$a-zA-Z][_$\w]*)\s*
+          (?=\()
+      captures:
+        '1': {name: variable.other.class.js}
+        '2': {name: entity.name.function.js}
+
+    - name: meta.function-call.method.without-arguments.js
+      match: |-
+        (?x)
+          (?<=\.)
+          ([_$a-zA-Z][_$\w]*)\s*
+          (\(\s*\))
+      captures:
+        '1': {name: entity.name.function.js}
+        '2': {name: meta.group.braces.round.function.arguments.js}
+
+    - name: meta.function-call.method.with-arguments.js
+      match: |-
+        (?x)
+          (?<=\.)
+          ([_$a-zA-Z][_$\w]*)\s*
+          (?=\()
+      captures:
+        '1': {name: entity.name.function.js}
 
   literal-language-variable:
     patterns:
@@ -595,29 +610,31 @@ repository:
 
   literal-variable:
     patterns:
+    # e.g. .CONSTANT
     - name: variable.other.constant.js
       match: \.?[A-Z][_$\dA-Z]*\b
 
-    - name: meta.entity.static.js
-      match: \b([A-Z][_$\w]*\.?)\s*?(?:([a-z$_][\w_$]*(?=\())|([a-z$_][\w_$]*))?
+    # e.g. Class.property
+    - name: meta.property.class.js
+      match: |-
+        (?x)
+          \b([A-Z][_$\w]*)\s*\.
+          ([_$a-zA-Z][_$\w]*)
       captures:
         '1': {name: variable.other.class.js}
-        '2': {name: meta.function-call.class.static.js}
-        '3': {name: variable.other.class.static.js}
+        '2': {name: variable.other.property.static.js}
 
+    # e.g. obj.property
     - name: variable.other.object.js
       match: (?<!\.)[_$a-zA-Z][_$\w]*\s*(?=[\[\.])
-
-    - name: meta.property.js
-      match: ([_$a-zA-Z][_$\w]*)\s*(?=[\[\.])
       captures:
-        '0': {name: meta.property-name.js}
         '1': {name: variable.other.object.js}
 
-    - name: meta.property.js
+    # e.g. obj.property
+    - name: meta.property.object.js
       match: (?<=[\.])\s*[_$a-zA-Z][_$\w]*
       captures:
-        '0': {name: variable.other.property.js}
+        '2': {name: variable.other.property.js}
 
     - name: variable.other.readwrite.js
       match: '[_$a-zA-Z][_$\w]*'

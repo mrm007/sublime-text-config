@@ -43,7 +43,7 @@
 		</dict>
 		<dict>
 			<key>begin</key>
-			<string>\b(module)\b</string>
+			<string>^\b(module)\s+</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>
@@ -84,7 +84,7 @@
 		</dict>
 		<dict>
 			<key>begin</key>
-			<string>(import)(\s+(open)\s+)?</string>
+			<string>^\b(import)\s+((open)\s+)?</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>
@@ -169,13 +169,13 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\b(data|type|case|of|let|in|as)\b</string>
+			<string>\b(data|type|case|of|let|in|as)\s+</string>
 			<key>name</key>
 			<string>keyword.other.elm</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\b(if|then|else)\b</string>
+			<string>\b(if|then|else)\s+</string>
 			<key>name</key>
 			<string>keyword.control.elm</string>
 		</dict>
@@ -279,7 +279,7 @@
 				<dict>
 					<key>name</key>
 					<string>keyword.other.port.elm</string>
-				</dict>				
+				</dict>
 				<key>2</key>
 				<dict>
 					<key>name</key>
@@ -316,7 +316,7 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\bport\b</string>
+			<string>\bport\s+</string>
 			<key>name</key>
 			<string>keyword.other.port.elm</string>
 		</dict>
@@ -332,7 +332,13 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\b(show|abs|acos|always|asin|atan|atan2|ceiling|clamp|compare|cos|curry|degrees|div|e|flip|floor|fromPolar|fst|id|isInfinite|isNaN|logBase|max|min|mod|not|otherwise|pi|radians|rem|round|sin|snd|sqrt|tan|toFloat|toPolar|truncate|turns|uncurry|xor|black|blue|brown|charcoal|complement|darkBlue|darkBrown|darkCharcoal|darkGray|darkGreen|darkGrey|darkOrange|darkPurple|darkRed|darkYellow|gray|grayscale|green|grey|greyscale|hsv|hsva|lightBlue|lightBrown|lightCharcoal|lightGray|lightGreen|lightGrey|lightOrange|lightPurple|lightRed|lightYellow|linear|orange|purple|radial|red|rgb|rgba|white|yellow|all|and|any|concat|concatMap|drop|filter|foldl|foldl1|foldr|foldr1|head|intersperse|isEmpty|join|last|length|map|maximum|minimum|or|partition|product|repeat|reverse|scanl|scanl1|sort|sortBy|sortWith|sum|tail|take|unzip|zip|zipWith|cons|isJust|isNothing|justs|maybe|combine|constant|count|countIf|dropIf|dropRepeats|dropWhen|foldp|keepIf|keepWhen|lift|lift2|lift3|lift4|lift5|lift6|lift7|lift8|merge|merges|sampleOn|asText|bold|centered|color|defaultStyle|height|italic|justified|leftAligned|line|link|markdown|monospace|plainText|rightAligned|style|toText|typeface|delay|every|fps|fpsWhen|hour|inHours|inMilliseconds|inMinutes|inSeconds|millisecond|minute|second|since|timestamp|alpha|circle|collage|dashed|defaultLine|dotted|filled|form|gradient|group|groupTransform|move|moveX|moveY|ngon|outlined|oval|path|polygon|rect|rotate|scale|segment|solid|sprite|square|textured|toForm|traced|above|absolute|below|beside|bottomLeft|bottomLeftAt|bottomRight|bottomRightAt|color|container|croppedImage|down|empty|fittedImage|flow|height|heightOf|image|inward|layers|left|link|midBottom|midBottomAt|midLeft|midLeftAt|midRight|midRightAt|midTop|midTopAt|middle|middleAt|opacity|outward|relative|right|size|sizeOf|spacer|tag|tiledImage|topLeft|topLeftAt|topRight|topRightAt|up|width|widthOf)\b</string>
+			<string>^[a-z][A-Za-z0-9_']*\s+</string>
+			<key>name</key>
+			<string>entity.name.function.elm</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>\b(show|abs|acos|always|asin|atan|atan2|ceiling|clamp|compare|cos|curry|degrees|div|e|flip|floor|fromPolar|fst|id|isInfinite|isNaN|logBase|max|min|mod|not|otherwise|pi|radians|rem|round|sin|snd|sqrt|tan|toFloat|toPolar|truncate|turns|uncurry|xor|black|blue|brown|charcoal|complement|darkBlue|darkBrown|darkCharcoal|darkGray|darkGreen|darkGrey|darkOrange|darkPurple|darkRed|darkYellow|gray|grayscale|green|grey|greyscale|hsv|hsva|lightBlue|lightBrown|lightCharcoal|lightGray|lightGreen|lightGrey|lightOrange|lightPurple|lightRed|lightYellow|linear|orange|purple|radial|red|rgb|rgba|white|yellow|all|and|any|concat|concatMap|drop|filter|foldl|foldl1|foldr|foldr1|head|intersperse|isEmpty|join|last|length|map|maximum|minimum|or|partition|product|repeat|reverse|scanl|scanl1|sort|sortBy|sortWith|sum|tail|take|unzip|zip|zipWith|cons|isJust|isNothing|justs|maybe|combine|constant|count|countIf|dropIf|dropRepeats|dropWhen|foldp|keepIf|keepWhen|lift|lift2|lift3|lift4|lift5|lift6|lift7|lift8|merge|merges|sampleOn|asText|bold|centered|color|defaultStyle|height|italic|justified|leftAligned|line|link|markdown|monospace|plainText|rightAligned|style|toText|typeface|delay|every|fps|fpsWhen|hour|inHours|inMilliseconds|inMinutes|inSeconds|millisecond|minute|second|since|timestamp|alpha|circle|collage|dashed|defaultLine|dotted|filled|form|gradient|group|groupTransform|move|moveX|moveY|ngon|outlined|oval|path|polygon|rect|rotate|scale|segment|solid|sprite|square|textured|toForm|traced|above|absolute|below|beside|bottomLeft|bottomLeftAt|bottomRight|bottomRightAt|color|container|croppedImage|down|empty|fittedImage|flow|height|heightOf|image|inward|layers|left|link|midBottom|midBottomAt|midLeft|midLeftAt|midRight|midRightAt|midTop|midTopAt|middle|middleAt|opacity|outward|relative|right|size|sizeOf|spacer|tag|tiledImage|topLeft|topLeftAt|topRight|topRightAt|up|width|widthOf)\s+</string>
 			<key>name</key>
 			<string>support.function.prelude.elm</string>
 		</dict>

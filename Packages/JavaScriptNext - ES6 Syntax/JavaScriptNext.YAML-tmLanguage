@@ -414,7 +414,7 @@ repository:
       match: \b(delete|in(stanceof)?|of|new|typeof|void|with)\b
 
     - name: keyword.operator.js
-      match: '!|%|&|\*|\-\-|\-|\+\+|\+|~|===|==|=|!=|!==|<=|>=|<<=|>>=|>>>=|<>|<|>|!|&&|\|\||\?\:|\*=|/=|%=|\+=|\-=|&=|\^='
+      match: '!|%|&|\*|--|-|\+\+|\+|~|===|==|=|!=|!==|<=|>=|<<=|>>=|>>>=|<>|<|>|!|&&|\|\||\?\:|\*=|/=|%=|\+=|-=|&=|\^='
 
     - name: punctuation.separator.key-value
       match: ':'

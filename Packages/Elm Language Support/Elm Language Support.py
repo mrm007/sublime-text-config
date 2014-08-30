@@ -383,3 +383,117 @@ class ElmDisable(sublime_plugin.ApplicationCommand):
     def run(self):
         SETTINGS.set("enabled", "false")
         sublime.save_settings('Elm Language Support.sublime-settings')
+
+class ElmCase(sublime_plugin.TextCommand):
+    def run(self, edit):
+        view = self.view
+        sel = view.sel()
+        word = view.word(sel[0])
+        sel.add(self.get_lines(sel[0]))
+
+    def find_indent(self, x):
+        view = self.view
+        line = view.substr(view.line(x))
+        indent = len(line) - len(line.lstrip(' '))
+        return indent
+
+    def next_line(self, x):
+        view = self.view
+        line = view.line(x)
+        return view.line(line.b + 1)
+
+    def previous_line(self, x):
+        view = self.view
+        line = view.line(x)
+        return view.line(line.begin() - 1)
+
+    class ElmCase(sublime_plugin.TextCommand):
+    def run(self, edit):
+        view = self.view
+        sel = view.sel()
+        word = view.word(sel[0])
+        sel.add(self.get_lines(sel[0]))
+
+    def find_indent(self, x):
+        view = self.view
+        line = view.substr(view.line(x))
+        indent = len(line) - len(line.lstrip(' '))
+        return indent
+
+    def next_line(self, x):
+        view = self.view
+        line = view.line(x)
+        return view.line(line.b + 1)
+
+    def previous_line(self, x):
+        view = self.view
+        line = view.line(x)
+        return view.line(line.begin() - 1)
+
+    def get_lines(self, x):
+        view = self.view
+        line = view.line(x)
+
+        lines = [line]
+
+        # add lines in current level above the current line
+        starting_indent = self.find_indent(line)
+        indent = starting_indent
+        y = x
+        while indent == starting_indent:
+            # if self.find_indent(self.previous_line(y)) < starting_indent:
+            #     break
+            lines.append(self.previous_line(y))
+            indent = self.find_indent(self.previous_line(y))
+            y = self.previous_line(y)
+
+        # add lines in current level below the current line
+        starting_indent = self.find_indent(self.next_line(x))
+        indent = starting_indent
+        y = x
+        while indent == starting_indent:
+            if self.find_indent(self.next_line(y)) < starting_indent:
+                break
+            lines.append(self.next_line(y))
+            indent = self.find_indent(self.next_line(y))
+            y = self.next_line(y)
+
+        begin = min([v.begin() for v in lines])
+        end = max([v.end() for v in lines])
+
+        case = view.find(' case ', begin)
+        if case is None or case.begin() > end:
+            return x
+        else:
+            return sublime.Region(case.begin() + 1, end)
+
+def select_block(view, keyword):
+    sel = view.sel()[0]
+    line = view.line(sel)
+    key_pattern = ' ' + keyword + ' '
+    key_pt = view.find(key_pattern, line.begin())
+
+    if key_pt is None:
+        return None
+
+    if key_pt < line.end():
+        starting_indent = find_indent(next_line(sel))
+    else:
+        starting_indent = find_indent(sel)
+
+    lines = [line]
+
+
+
+def find_indent(view):
+    line = view.substr(view.line(x))
+    indent = len(line) - len(line.lstrip(' '))
+    return indent
+
+def next_line(view):
+    line = view.line(x)
+    return view.line(line.end() + 1)
+
+def previous_line(view):
+    line = view.line(x)
+    return view.line(line.begin() - 1)

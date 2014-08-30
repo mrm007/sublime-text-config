@@ -1,6 +1,6 @@
-# [PackageDev] target_format: plist, ext: tmLanguage
+# [PackageDev] target_format: plist, ext: tmPreferences
 name: Comments
-uuid: BCCA5D24-53BF-4C69-9419-D393D5590D54
+uuid: A67A8BD9-A951-406F-9175-018DD4B52FD1
 scope: source.js, source.json
 settings:
   shellVariables:

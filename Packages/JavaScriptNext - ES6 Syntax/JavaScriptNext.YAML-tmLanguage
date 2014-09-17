@@ -3,7 +3,7 @@ name: JavaScript Next
 scopeName: source.js
 fileTypes: [js, htc, jsx]
 uuid: 487CF323-A3F9-48FA-B140-DCE8C893E664
-firstLineMatch: ^#!/.*\b(node|js)
+firstLineMatch: ^#!/.*\b(node|js)$\n?
 keyEquivalent: ^~J
 
 patterns:
@@ -76,28 +76,33 @@ repository:
     patterns:
     - include: '#special-comments-conditional-compilation'
 
-    - name: comment.block.documentation.js
-      begin: /\*\*(?!/)
-      end: \*/
-      captures:
-        '0': {name: punctuation.definition.comment.js}
-
     - name: comment.block.js
       begin: /\*
       end: \*/
       captures:
         '0': {name: punctuation.definition.comment.js}
 
+    - name: comment.block.documentation.js
+      begin: /\*\*(?!/)
+      end: \*/
+      captures:
+        '0': {name: punctuation.definition.comment.js}
+
+    - name: comment.block.html.js
+      match: (<!--|-->)
+      captures:
+        '0': {name: punctuation.definition.comment.js}
+        '2': {name: punctuation.definition.comment.js}
+
     - name: comment.line.double-slash.js
       match: (//).*$\n?
       captures:
         '1': {name: punctuation.definition.comment.js}
 
-    - name: comment.block.html.js
-      match: (<!--|-->)
+    - name: comment.line.shebang.js
+      match: ^(#!).*$\n?
       captures:
-        '0': {name: punctuation.definition.comment.html.js}
-        '2': {name: punctuation.definition.comment.html.js}
+        '1': {name: punctuation.definition.comment.js}
 
   function-declaration-parameters:
     patterns:

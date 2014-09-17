@@ -9,7 +9,7 @@
 		<string>jsx</string>
 	</array>
 	<key>firstLineMatch</key>
-	<string>^#!/.*\b(node|js)</string>
+	<string>^#!/.*\b(node|js)$\n?</string>
 	<key>keyEquivalent</key>
 	<string>^~J</string>
 	<key>name</key>
@@ -113,6 +113,22 @@
 				</dict>
 				<dict>
 					<key>begin</key>
+					<string>/\*</string>
+					<key>captures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.definition.comment.js</string>
+						</dict>
+					</dict>
+					<key>end</key>
+					<string>\*/</string>
+					<key>name</key>
+					<string>comment.block.js</string>
+				</dict>
+				<dict>
+					<key>begin</key>
 					<string>/\*\*(?!/)</string>
 					<key>captures</key>
 					<dict>
@@ -128,8 +144,6 @@
 					<string>comment.block.documentation.js</string>
 				</dict>
 				<dict>
-					<key>begin</key>
-					<string>/\*</string>
 					<key>captures</key>
 					<dict>
 						<key>0</key>
@@ -137,11 +151,16 @@
 							<key>name</key>
 							<string>punctuation.definition.comment.js</string>
 						</dict>
+						<key>2</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.definition.comment.js</string>
+						</dict>
 					</dict>
-					<key>end</key>
-					<string>\*/</string>
+					<key>match</key>
+					<string>(&lt;!--|--&gt;)</string>
 					<key>name</key>
-					<string>comment.block.js</string>
+					<string>comment.block.html.js</string>
 				</dict>
 				<dict>
 					<key>captures</key>
@@ -160,21 +179,16 @@
 				<dict>
 					<key>captures</key>
 					<dict>
-						<key>0</key>
+						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.definition.comment.html.js</string>
-						</dict>
-						<key>2</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.definition.comment.html.js</string>
+							<string>punctuation.definition.comment.js</string>
 						</dict>
 					</dict>
 					<key>match</key>
-					<string>(&lt;!--|--&gt;)</string>
+					<string>^(#!).*$\n?</string>
 					<key>name</key>
-					<string>comment.block.html.js</string>
+					<string>comment.line.shebang.js</string>
 				</dict>
 			</array>
 		</dict>

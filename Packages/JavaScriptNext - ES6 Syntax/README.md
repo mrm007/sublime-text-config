@@ -7,16 +7,14 @@ If you haven't already, [install Package Control](https://sublime.wbond.net/inst
 
 To set this as your default JavaScript syntax, open a javascript file, then select `View -> Syntax -> Open all with current extension as... -> JavascriptNext`.
 
-You may also need to change the ColorScheme, `Preferences -> Color Scheme --> JavaScriptNext`.
+You may also need to change the ColorScheme. Pick one from `Preferences -> Color Scheme -> JavaScriptNext`.
 
 ## Screenshots
 
-__ES6__
-
 ![screenshot](https://raw.github.com/Benvie/JavaScriptNext.tmLanguage/master/screenshots/es6.png)
 
-![screenshot](http://i.imgur.com/YzwbnTf.png)
+## Contributing
 
-__ES5__
+Edit the yaml files with the `YAML-XXX` extensions, convert them to plist xml files, and send in a pull request. The easiest way to do this is by using [AAAPackageDev](https://github.com/SublimeText/AAAPackageDev). You can do all of the above without leaving sublime text.
 
-![screenshot](https://raw.github.com/Benvie/JavaScriptNext.tmLanguage/master/screenshots/es5.png)
+YAML is used since it's a lot more compact and easier to edit than xml.

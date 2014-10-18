@@ -1,0 +1,8 @@
+{
+	"codeintel_scan_exclude_dir": {
+		"JavaScript": ["/build/", "/min/", "target"]
+	},
+	"codeintel_selected_catalogs": [
+		"jQuery", "HTML5"
+	]
+}

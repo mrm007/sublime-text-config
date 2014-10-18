@@ -1,0 +1,24 @@
+[
+  {
+    "keys": ["backspace"],
+    "command": "fpp_delete_line",
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.find-in-files"
+      }
+    ]
+  },
+  {
+    "keys": ["delete"],
+    "command": "fpp_delete_line",
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.find-in-files"
+      }
+    ]
+  }
+]

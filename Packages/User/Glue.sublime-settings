@@ -1,0 +1,4 @@
+{
+	"glue_userpath": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/mmate/dev/atlassian-scripts/bin",
+	"glue_shellpath": "/bin/zsh"
+}

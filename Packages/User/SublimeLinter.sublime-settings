@@ -4,9 +4,6 @@
 	"sublimelinter_notes": true,
 	"sublimelinter_gutter_marks": true,
 	"sublimelinter_gutter_marks_theme": "bright",
-	"sublimelinter_executable_map": {
-		"html": "D:\\bin\\tidy.exe"
-	},
 	"jshint_options": {
 		"indent": 1
 	},

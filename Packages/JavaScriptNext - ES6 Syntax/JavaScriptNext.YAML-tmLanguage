@@ -248,7 +248,7 @@ repository:
     - name: meta.prototype.function.js
       begin: >-
         (?x)
-          (\b[_$a-zA-Z][_$\w]*)?
+          (\b_?[A-Z][_$\w]*)?
           \.(prototype)
           \.([_$a-zA-Z][_$\w]*)
           \s*=
@@ -266,7 +266,7 @@ repository:
     - name: meta.function.static.js
       begin: >-
         (?x)
-          (\b[_$a-zA-Z][_$\w]*)?
+          (\b_?[A-Z][_$\w]*)?
           \.([_$a-zA-Z][_$\w]*)
           \s*=
           \s*(function(?:\s*\*|(?=\s|[(])))\s*
@@ -335,7 +335,7 @@ repository:
     - name: meta.prototype.function.arrow.js
       begin: >-
         (?x)
-          (\b[_$a-zA-Z][_$\w]*)?
+          (\b_?[A-Z][_$\w]*)?
           \.(prototype)
           \.([_$a-zA-Z][_$\w]*)
           \s*=
@@ -354,7 +354,7 @@ repository:
     - name: meta.function.static.arrow.js
       begin: >-
         (?x)
-          (\b[_$a-zA-Z][_$\w]*)?
+          (\b_?[A-Z][_$\w]*)?
           \.([_$a-zA-Z][_$\w]*)
           \s*=
           \s*(?=\([^()]*\)\s*(=>))

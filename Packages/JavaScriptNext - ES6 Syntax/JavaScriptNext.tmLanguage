@@ -516,7 +516,7 @@
 				<dict>
 					<key>begin</key>
 					<string>(?x)
-  (\b[_$a-zA-Z][_$\w]*)?
+  (\b_?[A-Z][_$\w]*)?
   \.(prototype)
   \.([_$a-zA-Z][_$\w]*)
   \s*=
@@ -562,7 +562,7 @@
 				<dict>
 					<key>begin</key>
 					<string>(?x)
-  (\b[_$a-zA-Z][_$\w]*)?
+  (\b_?[A-Z][_$\w]*)?
   \.([_$a-zA-Z][_$\w]*)
   \s*=
   \s*(?=\([^()]*\)\s*(=&gt;))</string>
@@ -918,7 +918,7 @@
 				<dict>
 					<key>begin</key>
 					<string>(?x)
-  (\b[_$a-zA-Z][_$\w]*)?
+  (\b_?[A-Z][_$\w]*)?
   \.(prototype)
   \.([_$a-zA-Z][_$\w]*)
   \s*=
@@ -961,7 +961,7 @@
 				<dict>
 					<key>begin</key>
 					<string>(?x)
-  (\b[_$a-zA-Z][_$\w]*)?
+  (\b_?[A-Z][_$\w]*)?
   \.([_$a-zA-Z][_$\w]*)
   \s*=
   \s*(function(?:\s*\*|(?=\s|[(])))\s*</string>

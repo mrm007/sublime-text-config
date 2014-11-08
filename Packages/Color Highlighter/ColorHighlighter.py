@@ -421,7 +421,7 @@ def get_word(view, reg):
 
 
 bound_symbols = ["\n", "\t", " ", ";", ":", ",", "\'", "\"", ">", "<", "(", ")"]
-def isInColor(view, sel, col_vars, array_format):
+def isInColor(view, sel, col_vars, array_format, line=None):
     b = sel.begin()
     if b != sel.end():
         return None, None, None
@@ -453,7 +453,10 @@ def isInColor(view, sel, col_vars, array_format):
         if res is not None:
             return word1, res, True
 
-    line = view.line(b)
+    if line is None:
+        line = view.line(b)
+    if line.size() > 1000:
+        return None, None, None
     beg = line.begin()
     matches = find_all(color_fmts_data["all"]["regex"], view.substr(line))
     for s, e in matches:
@@ -681,6 +684,11 @@ def extract_styl_name_val(line):
         return None, None, None
 
     var = line[:pos].strip()
+    if var == "":
+        return None, None, None
+    for c in var:
+        if not c.isalpha() and c != "-":
+            return None, None, None
     col = line[pos+1:].strip()
     return var, col, line.find(col)
 
@@ -999,8 +1007,12 @@ class Logic:
         res = []
         array_format = self.get_arr_fmt(view)
         m = regex.search(text)
+        line = None
         while m:
-            wd, col, var = isInColor(view, sublime.Region(m.start()+1, m.start()+1), col_vars, array_format=array_format)
+            r = sublime.Region(m.start()+1, m.start()+1)
+            if line is None or r.begin() >= line.end():
+                line = view.line(r.begin())
+            wd, col, var = isInColor(view, r, col_vars, array_format, line)
             if col is not None:
                 res.append((wd.begin(), wd.end(), col))
                 htmlGen.add_color(col)
@@ -1016,7 +1028,10 @@ class Logic:
             ind = text.find(k, pos)
             while ind != -1:
                 if (ind + l == tlen or text[ind + l] not in low_letters) and (ind == 0 or text[ind - 1] not in low_letters):
-                    wd, col, var = isInColor(view, sublime.Region(ind+1, ind+1), col_vars, array_format=array_format)
+                    r = sublime.Region(ind+1, ind+1)
+                    if line is None or r.begin() >= line.end():
+                        line = view.line(r.begin())
+                    wd, col, var = isInColor(view, sublime.Region(ind+1, ind+1), col_vars, array_format, line)
                     if col is not None:
                         res.append((wd.begin(), wd.end(), col))
                         htmlGen.add_color(col)

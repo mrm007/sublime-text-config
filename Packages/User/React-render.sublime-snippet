@@ -1,0 +1,14 @@
+<snippet>
+	<content><![CDATA[
+React.render(React.createElement(${1:ReactElement}, {
+	${2:...props}
+}),
+	${3:domElement}${4:,
+	callback});
+]]></content>
+	<tabTrigger>rr</tabTrigger>
+	<scope>source.js</scope>
+	<description>Render React Element</description>
+</snippet>
+
+

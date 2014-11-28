@@ -8,9 +8,9 @@ A Sublime Text plugin that beautifies Sass files. (Compatible with Sublime Text 
 
 ## Dependencies
 
-As this plugin uses `sass-convert`, you need to have sass installed. Read the [sass download page](http://sass-lang.com/download.html) to view the installation options.
+This plugin uses `sass-convert`, and so you need to have sass installed. Read the [sass download page](http://sass-lang.com/download.html) to view the installation options.
 
-Please always ensure you are using the latest version of Sass.
+It's a good idea to always use the latest version of Sass.
 
 ## Installation
 
@@ -39,8 +39,6 @@ Run the plugin from the command palette:
 2. Enter 'SassBeautify'
 
 **Conversion usage**
-
-You can use this plugin to convert from different types. For example, if you create a blank .scss file, then copy in a block of CSS code, you can use this plugin to convert the CSS to SCSS. Note that the entire file will have to be in the correct format for the conversion to work correctly.
 
 Run the conversion commands from the command palette:
 
@@ -73,25 +71,48 @@ The following settings can be adjusted:
   "old": false,
   // Custom environment PATH.
   "path": false,
+  // Custom environment GEM_PATH.
+  "gemPath": false,
   // Beautify the sass file after saving it?
-  "beautifyOnSave": false
+  "beautifyOnSave": false,
+  // Keep "inline" comments inline?
+  "inlineComments": false,
+  // Add a new line between selectors?
+  "newlineBetweenSelectors": false
 }
 ```
 
+### Key bindings
+
+The plugin does not set any default key bindings, thus you will need to specify your own.
+
+In your keymap file (Preferences >> Key bindings - User), add a custom key binding:
+
+```json
+[
+    {
+        "keys": ["alt+w"],
+        "command": "sass_beautify",
+    }
+]
+```
+
+
 ## Issues with ruby, Sass and your PATH
 
-If you installed ruby and sass via a version manager tool like [RVM](https://rvm.io/), [rbenv](https://github.com/sstephenson/rbenv) or via an installer like [ruby installer](http://rubyinstaller.org/), then you're likely to encounter issues with running Sass from Sublime Text. The issue boils down to the ruby/sass executable paths not existing in your global environment PATH variable.
+If you installed ruby and sass via a version manager tool like [RVM](https://rvm.io/), [rbenv](https://github.com/sstephenson/rbenv) or via an installer like [ruby installer](http://rubyinstaller.org/), then you're likely to encounter issues with running `sass-convert` from Sublime Text. 
 
 ### Compatibility with RVM/rbenv
 
-RVM/rbenv uses a shell login script (usually added to your ~/.bash_profile) to modify the environment PATH, so you will need to manually add this path to the package settings if you want this plugin to use the same ruby and gem versions.
+You need to specify the custom `PATH` and `GEM_PATH `values in your SassBeautify user settings.
 
-To get this plugin to work with RVM/rbenv, follow the steps below:
+Follow the steps below:
 
 1. Open up terminal
-2. Run the following `echo $PATH`
-3. Copy the *entire* PATH and add this to the package 'path' setting
- * For example: `/Users/richard/.rbenv/shims:/usr/local/opt/ruby/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin`
+2. Run: `echo $PATH`
+3. Copy the *entire* `PATH` into the 'path' setting
+4. Run: `echo $GEM_PATH`
+5. Copy the *entire* `GEM_PATH` into the 'gemPath' setting
 
 ### Compatibility with RubyInstaller
 
@@ -105,11 +126,8 @@ Please [create an issue](https://github.com/badsyntax/SassBeautify/issues) if yo
 
 ## Thanks
 
-Thank you to all the people who have tested and reported issues. A special thanks to [@WilliamVercken](https://github.com/WilliamVercken) and [@scotthovestadt](https://github.com/scotthovestadt).
-
-## Bonus
-
-This plugin will also [beautify CSS files](https://github.com/badsyntax/SassBeautify/issues/27)!
+Thanks to the [contributors](https://github.com/badsyntax/SassBeautify/graphs/contributors) and to all the people 
+who have tested and reported issues.
 
 ## License
 

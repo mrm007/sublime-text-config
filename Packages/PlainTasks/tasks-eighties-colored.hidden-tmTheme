@@ -12,8 +12,8 @@
 					<key>caret</key><string>#d3d0c8</string>
 					<key>foreground</key><string>#d3d0c8</string>
 					<key>invisibles</key><string>#EAE3C9</string>
-					<key>lineHighlight</key><string>#393939</string>
-					<key>selection</key><string>#393939</string>
+					<key>lineHighlight</key><string>#464646</string>
+					<key>selection</key><string>#464646</string>
 				</dict>
 			</dict>
 			<dict>
@@ -22,7 +22,7 @@
 				<key>settings</key>
 				<dict>
 					<key>fontStyle</key><string>italic</string>
-					<key>foreground</key><string>#747369</string>
+					<key>foreground</key><string>#81EDA2</string>
 				</dict>
 			</dict>
 			<dict>
@@ -39,7 +39,7 @@
 				<key>scope</key><string>notes.todo</string>
 				<key>settings</key>
 				<dict>
-					<key>foreground</key><string>#515151</string>
+					<key>foreground</key><string>#ACC6F6</string>
 				</dict>
 			</dict>
 			<dict>
@@ -82,7 +82,7 @@
 				<key>scope</key><string>meta.item.todo.cancelled</string>
 				<key>settings</key>
 				<dict>
-					<key>foreground</key><string>#747369</string>
+					<key>foreground</key><string>#EB7875</string>
 					<key>fontStyle</key><string>italic</string>
 				</dict>
 			</dict>
@@ -341,48 +341,33 @@
 				</dict>
 			</dict>
 			<dict>
-				<key>name</key>
-				<string>High</string>
-				<key>scope</key>
-				<string>string.other.tag.todo.high</string>
+				<key>name</key><string>High</string>
+				<key>scope</key><string>string.other.tag.todo.high</string>
 				<key>settings</key>
 				<dict>
-					<key>background</key>
-					<string>#FF7F00</string>
-					<key>foreground</key>
-					<string>#000000</string>
-					<key>fontStyle</key>
-					<string>bold</string>
+					<key>background</key><string>#FF7F00</string>
+					<key>foreground</key><string>#000000</string>
+					<key>fontStyle</key><string>bold</string>
 				</dict>
 			</dict>
 			<dict>
-				<key>name</key>
-				<string>Low</string>
-				<key>scope</key>
-				<string>string.other.tag.todo.low</string>
+				<key>name</key><string>Low</string>
+				<key>scope</key><string>string.other.tag.todo.low</string>
 				<key>settings</key>
 				<dict>
-					<key>background</key>
-					<string>#222222</string>
-					<key>foreground</key>
-					<string>#ffffff</string>
-					<key>fontStyle</key>
-					<string>bold</string>
+					<key>background</key><string>#ffffff</string>
+					<key>foreground</key><string>#000000</string>
+					<key>fontStyle</key><string>bold</string>
 				</dict>
 			</dict>
 			<dict>
-				<key>name</key>
-				<string>Critical</string>
-				<key>scope</key>
-				<string>string.other.tag.todo.critical</string>
+				<key>name</key><string>Critical</string>
+				<key>scope</key><string>string.other.tag.todo.critical</string>
 				<key>settings</key>
 				<dict>
-					<key>background</key>
-					<string>#FF0000</string>
-					<key>foreground</key>
-					<string>#000000</string>
-					<key>fontStyle</key>
-					<string>bold</string>
+					<key>background</key><string>#FF0000</string>
+					<key>foreground</key><string>#000000</string>
+					<key>fontStyle</key><string>bold</string>
 				</dict>
 			</dict>
 		</array>

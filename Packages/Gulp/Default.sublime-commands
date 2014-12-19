@@ -1,0 +1,23 @@
+[
+    {
+      "caption": "Gulp",
+      "command": "gulp"
+    },
+    {
+      "caption": "Gulp (silent)",
+      "command": "gulp",
+      "args": { "silent": true }
+    },
+    {
+      "caption": "Gulp: Show panel",
+      "command": "gulp_show_panel"
+    },
+    {
+      "caption": "Gulp: Kill running tasks",
+      "command": "gulp_kill"
+    },
+    {
+      "caption": "Gulp: List plugins",
+      "command": "gulp_plugins"
+    }
+]

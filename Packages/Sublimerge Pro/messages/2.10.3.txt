@@ -1,0 +1,34 @@
+Sublimerge has just been upgraded to version 2.10.3
+
+It is highly recommended to restart Sublime Text before use.
+------------------------------------------------------------
+
+
+What's new?
+===========
+
+Bug fixes:
+  - Diff algorithm
+    Fixed a bug that caused the input files to be inproperly compared when contained "strange"
+    white characters.
+
+
+Enhancements:
+    - Edit Mode
+      When entering edit mode, the first editable panel is automatically focused.
+
+
+Other:
+	- Support for future package name change.
+      In the near future, the plugin will be renamed to "Sublimerge 2" because I'm working
+      on "Sublimerge 3" right now. The new version will be addressed to ST3 users only. 
+      ST2 users will be able to install "Sublimerge 2" only, however ST3 users will have 
+      a choice.
+
+
+Licensing
+=========
+
+If you like Sublimerge, please support development by buying a license. It doesn't cost much! :)
+
+http://www.sublimerge.com/

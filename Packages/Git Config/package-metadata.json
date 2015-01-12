@@ -1,1 +1,1 @@
-{"url": "https://github.com/robballou/gitconfig-sublimetext", "version": "2013.08.26.19.34.37", "description": "Sublime Text 2 language file for .gitconfig and .gitignore files"}
+{"description": "Sublime Text 2 language file for .gitconfig and .gitignore files", "url": "https://github.com/robballou/gitconfig-sublimetext", "platforms": ["*"], "version": "2014.12.23.16.12.03", "sublime_text": "*", "dependencies": []}

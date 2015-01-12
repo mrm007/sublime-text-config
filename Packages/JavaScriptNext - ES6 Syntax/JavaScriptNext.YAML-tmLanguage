@@ -175,7 +175,7 @@ repository:
           \s+([_$a-zA-Z][_$\w]*)
           (?:
             \s+(extends)
-            \s+([_$a-zA-Z][_$\w]*)
+            \s+([_$a-zA-Z][_$\w.]*)
           )?
           \s*({)
       beginCaptures:

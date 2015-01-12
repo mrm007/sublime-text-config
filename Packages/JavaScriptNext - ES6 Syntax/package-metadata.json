@@ -1,1 +1,1 @@
-{"url": "https://github.com/Benvie/JavaScriptNext.tmLanguage", "version": "2014.12.05.07.37.25", "description": "JavaScript language definition for TextMate and SublimeText2"}
+{"description": "JavaScript language definition for TextMate and SublimeText2", "url": "https://github.com/Benvie/JavaScriptNext.tmLanguage", "platforms": ["*"], "version": "2015.01.04.06.18.52", "sublime_text": "*", "dependencies": []}

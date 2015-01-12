@@ -1,0 +1,1 @@
+{"description": "The professional, side-by-side tool to diff and merge files and directories right in Sublime Text. Supports Git, SVN and Mercurial.", "url": "http://www.sublimerge.com/", "platforms": ["*"], "version": "2.10.4", "sublime_text": "<3000", "dependencies": []}

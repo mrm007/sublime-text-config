@@ -1,1 +1,1 @@
-{"url": "https://github.com/clintberry/sublime-text-2-ini", "version": "2014.10.17.07.02.32", "description": "INI syntax highlighting for Sublime Text 2"}
+{"description": "INI syntax highlighting for Sublime Text 2", "url": "https://github.com/clintberry/sublime-text-2-ini", "platforms": ["*"], "version": "2014.12.29.17.31.37", "sublime_text": "*", "dependencies": []}

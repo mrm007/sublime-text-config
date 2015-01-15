@@ -62,7 +62,7 @@
 					<array>
 						<dict>
 							<key>include</key>
-							<string>source.js</string>
+							<string>$self</string>
 						</dict>
 					</array>
 				</dict>
@@ -93,7 +93,7 @@
 					<array>
 						<dict>
 							<key>include</key>
-							<string>source.js</string>
+							<string>$self</string>
 						</dict>
 					</array>
 				</dict>
@@ -124,7 +124,7 @@
 					<array>
 						<dict>
 							<key>include</key>
-							<string>source.js</string>
+							<string>$self</string>
 						</dict>
 					</array>
 				</dict>
@@ -325,8 +325,7 @@
 					<array>
 						<dict>
 							<key>match</key>
-							<string>(?x)
-  [_$a-zA-Z][_$\w]*</string>
+							<string>[_$a-zA-Z][_$\w]*</string>
 							<key>name</key>
 							<string>variable.parameter.function.js</string>
 						</dict>
@@ -1193,9 +1192,38 @@
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>(?&lt;!\.)\b(case|default|switch)\b</string>
+					<string>(?&lt;!\.)\b(switch)\b</string>
 					<key>name</key>
 					<string>keyword.control.switch.js</string>
+				</dict>
+				<dict>
+					<key>begin</key>
+					<string>(?&lt;!\.)\b(case|default)\b</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>keyword.control.switch.js</string>
+						</dict>
+					</dict>
+					<key>end</key>
+					<string>:</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.separator.switch.js</string>
+						</dict>
+					</dict>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>$self</string>
+						</dict>
+					</array>
 				</dict>
 				<dict>
 					<key>match</key>
@@ -1204,10 +1232,33 @@
 					<string>keyword.operator.js</string>
 				</dict>
 				<dict>
-					<key>match</key>
+					<key>begin</key>
+					<string>\?</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>keyword.operator.ternary.js</string>
+						</dict>
+					</dict>
+					<key>end</key>
 					<string>:</string>
-					<key>name</key>
-					<string>punctuation.separator.key-value</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>keyword.operator.ternary.js</string>
+						</dict>
+					</dict>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>$self</string>
+						</dict>
+					</array>
 				</dict>
 				<dict>
 					<key>match</key>
@@ -1277,12 +1328,6 @@
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>(?x)=</string>
-					<key>name</key>
-					<string>keyword.operator.assignment.js</string>
-				</dict>
-				<dict>
-					<key>match</key>
 					<string>(?x)
   --   | # decrement       n/a             right-or-left
   \+\+ | # increment       n/a             right-or-left
@@ -1303,14 +1348,14 @@
 				<dict>
 					<key>captures</key>
 					<dict>
-						<key>2</key>
+						<key>1</key>
 						<dict>
 							<key>name</key>
 							<string>punctuation.separator.key-value.js</string>
 						</dict>
 					</dict>
 					<key>match</key>
-					<string>(?&lt;=['"])(\s*)(:)</string>
+					<string>(?&lt;=['"])\s*(:)</string>
 				</dict>
 				<dict>
 					<key>captures</key>
@@ -1327,7 +1372,7 @@
 						</dict>
 					</dict>
 					<key>match</key>
-					<string>(?&lt;!\?|\? |case )(?!\?)([_$a-zA-Z][_$\w]*)\s*(:)</string>
+					<string>(?&lt;!\.)([_$a-zA-Z][_$\w]*)\s*(:)</string>
 					<key>name</key>
 					<string>constant.other.object.key.js</string>
 				</dict>
@@ -1698,7 +1743,7 @@
 							<array>
 								<dict>
 									<key>include</key>
-									<string>source.js</string>
+									<string>$self</string>
 								</dict>
 							</array>
 						</dict>
@@ -1952,7 +1997,7 @@
 						</dict>
 						<dict>
 							<key>include</key>
-							<string>source.js</string>
+							<string>$self</string>
 						</dict>
 					</array>
 				</dict>
@@ -2084,6 +2129,12 @@
 					<string>\b(Buffer|EventEmitter|Server|Pipe|Socket|REPLServer|ReadStream|WriteStream|Stream|Inflate|Deflate|InflateRaw|DeflateRaw|GZip|GUnzip|Unzip|Zip)\b</string>
 					<key>name</key>
 					<string>support.class.node.js</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\$[_$\w]+</string>
+					<key>name</key>
+					<string>variable.other.dollar.js</string>
 				</dict>
 			</array>
 		</dict>

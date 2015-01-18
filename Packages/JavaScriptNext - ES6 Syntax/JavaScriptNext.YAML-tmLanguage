@@ -640,7 +640,7 @@ repository:
         '1': {name: punctuation.separator.key-value.js}
 
     - name: constant.other.object.key.js
-      match: (?<!\.)([_$a-zA-Z][_$\w]*)\s*(:)
+      match: (?<!\.|\?|\? )([_$a-zA-Z][_$\w]*)\s*(:)
       captures:
         '1': {name: string.unquoted.label.js}
         '2': {name: punctuation.separator.key-value.js}

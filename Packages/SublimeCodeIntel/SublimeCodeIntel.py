@@ -249,8 +249,18 @@ def tooltip(view, calltips, original_pos, lang):
             text = tip_info[0] + ' ' + text
         if not codeintel_snippets:
             snippet = None
-        snippets.extend(
-            (('  ' if i > 0 else '') + l, snippet or '${0}') for i, l in enumerate(tip_info))
+
+        max_line_length = 80
+        measured_tips = []
+        for tip in tip_info:
+            if len(tip) > max_line_length:
+                chunks = len(tip)
+                for i in range(0, chunks, max_line_length):
+                    measured_tips.append(tip[i:i + max_line_length])
+            else:
+                measured_tips.append(tip)
+
+        snippets.extend((('  ' if i > 0 else '') + l, snippet or '${0}') for i, l in enumerate(measured_tips))
 
     if codeintel_tooltips == 'popup':
         tooltip_popup(view, snippets)
@@ -1276,13 +1286,13 @@ class SettingsManager():
         if not window.folders():
             return None
         data = file(os.path.normpath(os.path.join(sublime.packages_path(), '..', 'Settings', 'Session.sublime_session')), 'r').read()
-        data = data.replace('\t', ' ')
+        data = data.decode('utf-8').replace('\t', ' ')
         data = json.loads(data, strict=False)
         projects = data['workspaces']['recent_workspaces']
 
         if os.path.lexists(os.path.join(sublime.packages_path(), '..', 'Settings', 'Auto Save Session.sublime_session')):
             data = file(os.path.normpath(os.path.join(sublime.packages_path(), '..', 'Settings', 'Auto Save Session.sublime_session')), 'r').read()
-            data = data.replace('\t', ' ')
+            data = data.decode('utf-8').replace('\t', ' ')
             data = json.loads(data, strict=False)
             if hasattr(data, 'workspaces') and hasattr(data['workspaces'], 'recent_workspaces') and data['workspaces']['recent_workspaces']:
                 projects += data['workspaces']['recent_workspaces']
@@ -1516,7 +1526,9 @@ class PythonCodeIntel(sublime_plugin.EventListener):
 
         # print('on_modified', view.command_history(1), view.command_history(0), view.command_history(-1))
         if (not hasattr(view, 'command_history') or view.command_history(1)[1] is None and (
-                view.command_history(0)[0] == 'insert' or
+                view.command_history(0)[0] == 'insert' and (
+                    view.command_history(0)[1]['characters'][-1] != '\n'
+                ) or
                 view.command_history(-1)[0] in ('insert', 'paste') and (
                     view.command_history(0)[0] == 'commit_completion' or
                     view.command_history(0)[0] == 'insert_snippet' and view.command_history(

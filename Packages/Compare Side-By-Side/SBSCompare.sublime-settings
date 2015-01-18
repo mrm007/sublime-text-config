@@ -1,0 +1,29 @@
+{
+	// should filenames show full paths underneath them?
+	"expanded_filenames": true,
+	
+	// make the comparison output read only (recommended)
+	"read_only": true,
+	
+	// toggle the sidebar on/off upon opening the comparison output window
+	// turn this on if you usually have the sidebar open in your main window
+	"toggle_sidebar": true,
+	
+	// toggle the top menu on/off upon opening the comparison output window
+	// turn this on if you usually have the menu hidden in your main window
+	"toggle_menu": true,
+	
+	// syntax colour name to use for code removed from column A
+	"remove_colour": "invalid.illegal",
+	
+	// syntax colour name to use for code added in column B
+	"add_colour": "string",
+	
+	// only draw outlines (no background colour filling)
+	// note: fill highlighting (false) only works on ST3
+	// ST2 will always use outlines only
+	"outlines_only": false,
+	
+	// show a popup after comparison counting # of lines added/removed/total
+	"line_count_popup": true
+}

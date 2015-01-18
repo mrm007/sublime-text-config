@@ -1372,7 +1372,7 @@
 						</dict>
 					</dict>
 					<key>match</key>
-					<string>(?&lt;!\.)([_$a-zA-Z][_$\w]*)\s*(:)</string>
+					<string>(?&lt;!\.|\?|\? )([_$a-zA-Z][_$\w]*)\s*(:)</string>
 					<key>name</key>
 					<string>constant.other.object.key.js</string>
 				</dict>

@@ -510,7 +510,7 @@ class WinINetDownloader(DecodingDownloader, LimitingDownloader, CachingDownloade
             except (NonHttpError, HttpError) as e:
 
                 # GitHub and BitBucket seem to time out a lot
-                if str(e).find('timed out') != -1:
+                if unicode_from_os(e).find('timed out') != -1:
                     error_string = u'Downloading %s timed out' % url
                     if tries:
                         error_string += ', trying again'
@@ -518,7 +518,7 @@ class WinINetDownloader(DecodingDownloader, LimitingDownloader, CachingDownloade
                             console_write(error_string, True)
                     continue
 
-                error_string = u'%s %s downloading %s.' % (error_message, e, url)
+                error_string = u'%s %s downloading %s.' % (error_message, unicode_from_os(e), url)
 
             finally:
                 if http_connection:
@@ -625,7 +625,15 @@ class WinINetDownloader(DecodingDownloader, LimitingDownloader, CachingDownloade
             success = wininet.InternetQueryOptionA(handle, option, ref, ctypes.byref(to_read_was_read))
             if not success:
                 if ctypes.GetLastError() != self.ERROR_INSUFFICIENT_BUFFER:
+
+                    # Some users report issues trying to fetch proxy information.
+                    # Rather than bailing on the connection, we just return
+                    # blank info.
+                    if option == self.INTERNET_OPTION_PROXY:
+                        return InternetProxyInfo()
+
                     raise NonHttpError(self.extract_error())
+
                 # The error was a buffer that was too small, so try again
                 option_buffer_size = to_read_was_read.value
                 try_again = True

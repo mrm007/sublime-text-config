@@ -710,9 +710,10 @@ class PackageManager():
         have_installed_dependencies = False
         if not is_dependency:
             dependencies = release.get('dependencies', [])
-            if not self.install_dependencies(dependencies):
-                return False
-            have_installed_dependencies = True
+            if dependencies:
+                if not self.install_dependencies(dependencies):
+                    return False
+                have_installed_dependencies = True
 
         url = release['url']
         package_filename = package_name + '.sublime-package'
@@ -938,7 +939,8 @@ class PackageManager():
                     add_extracted_dirs(dest_dir)
                     extracted_paths.append(dest)
                     try:
-                        open_compat(dest, 'wb').write(package_zip.read(path))
+                        with open_compat(dest, 'wb') as f:
+                            f.write(package_zip.read(path))
                     except (IOError) as e:
                         message = unicode_from_os(e)
                         if re.search('[Ee]rrno 13', message):
@@ -1006,22 +1008,19 @@ class PackageManager():
                 }
             self.record_usage(params)
 
-            names_key = 'installed_packages'
-            if is_dependency:
-                names_key = 'installed_dependencies'
+            if not is_dependency:
+                # Record the install in the settings file so that you can move
+                # settings across computers and have the same packages installed
+                def save_names():
+                    settings = sublime.load_settings(pc_settings_filename())
+                    original_names = load_list_setting(settings, 'installed_packages')
+                    names = list(original_names)
+                    if package_name not in names:
+                        names.append(package_name)
+                    save_list_setting(settings, pc_settings_filename(), 'installed_packages', names, original_names)
+                sublime.set_timeout(save_names, 1)
 
-            # Record the install in the settings file so that you can move
-            # settings across computers and have the same packages installed
-            def save_names():
-                settings = sublime.load_settings(pc_settings_filename())
-                original_names = load_list_setting(settings, names_key)
-                names = list(original_names)
-                if package_name not in names:
-                    names.append(package_name)
-                save_list_setting(settings, pc_settings_filename(), names_key, names, original_names)
-            sublime.set_timeout(save_names, 1)
-
-            if is_dependency:
+            else:
                 loader.add(packages[package_name]['load_order'], package_name, loader_code)
 
             # If we didn't extract directly into the Packages/{package_name}/
@@ -1074,7 +1073,7 @@ class PackageManager():
             # after we close it.
             sublime.set_timeout(lambda: delete_directory(tmp_dir), 1000)
 
-    def install_dependencies(self, dependencies):
+    def install_dependencies(self, dependencies, fail_early=True):
         """
         Ensures a list of dependencies are installed and up-to-date
 
@@ -1089,52 +1088,105 @@ class PackageManager():
 
         packages = self.list_available_packages(exclude_dependencies=False)
 
+        error = False
         for dependency in dependencies:
             # This is a per-machine dynamically created dependency, so we skip
             if dependency == '0_package_control_loader':
                 continue
 
+            # Collect dependency information
             dependency_dir = os.path.join(sublime.packages_path(), dependency)
             dependency_git_dir = os.path.join(dependency_dir, '.git')
             dependency_hg_dir = os.path.join(dependency_dir, '.hg')
             dependency_metadata = self.get_metadata(dependency, is_dependency=True)
 
+            dependency_releases = packages.get(dependency, {}).get('releases', [])
+            dependency_release = dependency_releases[0] if dependency_releases else {}
+
+            installed_version = dependency_metadata.get('version')
+            installed_version = version_comparable(installed_version) if installed_version else None
+            available_version = dependency_release.get('version')
+            available_version = version_comparable(available_version) if available_version else None
+
+            def dependency_write(msg):
+                msg = u"The dependency {dependency} " + msg
+                msg = msg.format(
+                    dependency=dependency,
+                    installed_version=installed_version,
+                    available_version=available_version
+                )
+                console_write(msg, True)
+
+            def dependency_write_debug(msg):
+                if debug:
+                    dependency_write(msg)
+
             install_dependency = False
             if not os.path.exists(dependency_dir):
                 install_dependency = True
-                if debug:
-                    console_write(u'The dependency %s is not currently installed, installing' % dependency, True)
+                dependency_write(u'is not currently installed; installing')
             elif os.path.exists(dependency_git_dir):
-                if debug:
-                    console_write(u'The dependency %s is installed via git, leaving alone' % dependency, True)
+                dependency_write_debug(u'is installed via git; leaving alone')
             elif os.path.exists(dependency_hg_dir):
-                if debug:
-                    console_write(u'The dependency %s is installed via hg, leaving alone' % dependency, True)
+                dependency_write_debug(u'is installed via hg; leaving alone')
             elif not dependency_metadata:
-                if debug:
-                    console_write(u'The dependency %s appears to be installed, but is missing metadata, leaving alone' % dependency, True)
+                dependency_write_debug(u'appears to be installed, but is missing metadata; leaving alone')
+            elif not dependency_releases:
+                dependency_write(u'is installed, but there are no available releases; leaving alone')
+            elif not available_version:
+                dependency_write(u'is installed, but the latest available release could not be determined; leaving alone')
+            elif not installed_version:
+                install_dependency = True
+                dependency_write(u'is installed, but its version is not known; upgrading to latest release {available_version}')
+            elif installed_version < available_version:
+                install_dependency = True
+                dependency_write(u'is installed, but out of date; upgrading to latest release {available_version} from {installed_version}')
             else:
-                dependency_releases = packages[dependency].get('releases', [])
-                if len(dependency_releases) < 1:
-                    console_write(u'The dependency %s is installed, but there are no available releases, leaving alone' % dependency, True)
-                else:
-                    dependency_release = dependency_releases[0]
-
-                    installed_dependency_version = version_comparable(dependency_metadata.get('version', '0.0.0'))
-                    available_dependency_version = version_comparable(dependency_release.get('version', '0.0.0'))
-
-                    if installed_dependency_version < available_dependency_version:
-                        console_write(u'The dependency %s is installed, but out-of-date, upgrading to latest release' % dependency, True)
-                        install_dependency = True
-                    else:
-                        console_write(u'The dependency %s is installed and up-to-date, leaving alone' % dependency, True)
+                dependency_write_debug(u'is installed and up to date ({installed_version}); leaving alone')
 
             if install_dependency:
                 dependency_result = self.install_package(dependency, True)
                 if not dependency_result:
-                    return dependency_result
+                    dependency_write(u'could not be installed or updated')
+                    if fail_early:
+                        return False
+                    error = True
 
-        return True
+                dependency_write(u'has successfully been installed or updated')
+
+        return not error
+
+    def cleanup_dependencies(self, ignore_package=None, required_dependencies=None):
+        """
+        Remove all not needed dependencies by the installed packages,
+        ignoring the specified package.
+
+        :param ignore_package:
+            The package to ignore when enumerating dependencies.
+            Not used when required_dependencies is provided.
+
+        :param required_dependencies:
+            All required dependencies, for speedup purposes.
+
+        :return:
+            Boolean indicating the success of the removals.
+        """
+
+        installed_dependencies = self.list_dependencies()
+        if not required_dependencies:
+            required_dependencies = self.find_required_dependencies(ignore_package)
+
+        orphaned_dependencies = set(installed_dependencies) - set(required_dependencies)
+        orphaned_dependencies = sorted(orphaned_dependencies, key=lambda s: s.lower())
+
+        error = False
+        for dependency in orphaned_dependencies:
+            if self.remove_package(dependency, is_dependency=True):
+                console_write(u"The orphaned dependency %s has been removed" % dependency, True)
+            else:
+                error = True
+
+        return not error
 
     def backup_package_dir(self, package_name):
         """
@@ -1274,15 +1326,13 @@ class PackageManager():
                 view.run_command('insert', {'characters': string})
 
             if not view.size():
-                position = 0
                 write('Package Control Messages\n' +
                     '========================')
-            else:
-                position = view.size()
 
             view.settings().set("word_wrap", True)
             view.settings().set("auto_indent", False)
 
+            position = view.size()
             view.sel().clear()
             view.sel().add(sublime.Region(position, position))
 
@@ -1365,18 +1415,15 @@ class PackageManager():
         }
         self.record_usage(params)
 
-        names_key = 'installed_packages'
-        if is_dependency:
-            names_key = 'installed_dependencies'
-
-        def save_names():
-            settings = sublime.load_settings(pc_settings_filename())
-            original_names = load_list_setting(settings, names_key)
-            names = list(original_names)
-            if package_name in names:
-                names.remove(package_name)
-            save_list_setting(settings, pc_settings_filename(), names_key, names, original_names)
-        sublime.set_timeout(save_names, 1)
+        if not is_dependency:
+            def save_names():
+                settings = sublime.load_settings(pc_settings_filename())
+                original_names = load_list_setting(settings, 'installed_packages')
+                names = list(original_names)
+                if package_name in names:
+                    names.remove(package_name)
+                save_list_setting(settings, pc_settings_filename(), 'installed_packages', names, original_names)
+            sublime.set_timeout(save_names, 1)
 
         if can_delete_dir and os.path.exists(package_dir):
             os.rmdir(package_dir)
@@ -1385,12 +1432,11 @@ class PackageManager():
             loader.remove(package_name)
 
         else:
+            clean_up = " and will be cleaned up on the next restart" if not can_delete_dir else ''
+            console_write(u"The package %s has been removed" % package_name + clean_up, True)
+
             # Remove dependencies that are no longer needed
-            installed_dependencies = self.list_dependencies()
-            required_dependencies = self.find_required_dependencies(package_name)
-            orphaned_dependencies = list(set(installed_dependencies) - set(required_dependencies))
-            for dependency in orphaned_dependencies:
-                self.remove_package(dependency, is_dependency=True)
+            self.cleanup_dependencies(package_name)
 
         return True
 

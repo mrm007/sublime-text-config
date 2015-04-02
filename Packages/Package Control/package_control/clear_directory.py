@@ -67,7 +67,8 @@ def clear_directory(directory, ignore_paths=None):
                     except OSError:
                         # try to rename file to reduce chance that
                         # file is in use on next start
-                        os.rename(path, path + '.package-control-old')
+                        if path[-20:] != '.package-control-old':
+                            os.rename(path, path + '.package-control-old')
                         raise
             except (OSError, IOError):
                 was_exception = True
@@ -95,9 +96,18 @@ def _on_error(function, path, excinfo):
         os.chmod(path, stat.S_IWUSR)
         function(path)
     except (OSError):
-        # try to rename file to reduce chance that
-        # file is in use on next start
-        os.rename(path, path + '.package-control-old')
+        # Try to rename file to reduce chance that file is in use on next
+        # start. However, if an error occurs with the rename, just ignore it
+        # so that we can continue removing other files. Hopefully this should
+        # result in a folder with just a .dll file in it after restart, which
+        # should clean up no problem. Without catching the OSError here, the
+        # python file that imports the .dll may never get deleted, meaning that
+        # the package can never be cleanly removed.
+        try:
+            if not os.path.isdir(path) and path[-20:] != '.package-control-old':
+                os.rename(path, path + '.package-control-old')
+        except (OSError):
+            pass
 
 
 def delete_directory(path):

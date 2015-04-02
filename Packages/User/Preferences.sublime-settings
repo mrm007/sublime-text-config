@@ -1,11 +1,14 @@
 {
+	"binary_file_patterns":
+	[
+		"node_modules/"
+	],
 	"bold_folder_labels": true,
 	"color_scheme": "Packages/Dayle Rees Color Schemes/sublime/light/snappy-light.tmTheme",
 	"copy_with_empty_selection": false,
 	"drag_text": false,
 	"draw_minimap_border": true,
 	"draw_white_space": "selection",
-	"ensure_newline_at_eof_on_save": true,
 	"fade_fold_buttons": false,
 	"find_selected_text": true,
 	"font_face": "Inconsolata",

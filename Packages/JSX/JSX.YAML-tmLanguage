@@ -36,7 +36,7 @@ repository:
           '0': {name: punctuation.definition.brace.curly.end.js}
         patterns:
           - include: '#js'
- 
+
 
   html-tags:
     patterns:
@@ -128,7 +128,7 @@ repository:
 
   html-tag-generic-attribute:
     name: entity.other.attribute-name.html
-    match: \b([a-zA-Z\-:]+)
+    match: \b([a-zA-Z\-:_]+)
 
   html-tag-id-attribute:
     name: meta.attribute-with-value.id.html
@@ -289,6 +289,17 @@ repository:
         beginCaptures:
           '0': {name: punctuation.definition.string.begin.js}
         end: '"'
+        endCaptures:
+          '0': {name: punctuation.definition.string.end.js}
+        patterns:
+        - name: constant.character.escape.js
+          match: \\(x\h{2}|[0-2][0-7]{,2}|3[0-6][0-7]|37[0-7]?|[4-7][0-7]?|.)
+
+      - name: string.quoted.template.js
+        begin: '`'
+        beginCaptures:
+          '0': {name: punctuation.definition.string.begin.js}
+        end: '`'
         endCaptures:
           '0': {name: punctuation.definition.string.end.js}
         patterns:

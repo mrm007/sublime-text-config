@@ -695,7 +695,7 @@ def extract_styl_name_val(line):
     if var == "":
         return None, None, None
     for c in var:
-        if not c.isalpha() and c != "-":
+        if not c.isalpha() and c != "-" and c != "_":
             return None, None, None
     col = line[pos+1:].strip()
     return var, col, line.find(col)
@@ -1443,7 +1443,9 @@ def restore_broken_schemes():
     g_cs = sublime.load_settings("Preferences.sublime-settings").get("color_scheme")
     for w in sublime.windows():
         for v in w.views():
-            if not os.path.exists(to_abs_cs_path(v.settings().get("color_scheme"))):
+            scheme_path = v.settings().get("color_scheme")
+            scheme = sublime.load_resource(scheme_path) if get_version()>=3000 else ''
+            if not (scheme or os.path.exists(to_abs_cs_path(scheme_path))):
                 set_scheme(v, g_cs)
 
 def plugin_loaded():

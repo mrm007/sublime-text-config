@@ -273,6 +273,12 @@ settings:
   settings:
     foreground: '#FF9122'
 
+- name: js variable dollar
+  scope: meta.initialization, variable.other.dollar.js
+  settings:
+    fontStyle: italic
+    foreground: '#FF9122'
+
 - name: js object
   scope: variable.other.object.js
   settings:
@@ -475,8 +481,8 @@ settings:
   settings:
     foreground: '#F9044E'
 
-- name: meta.delimiter.object.comma.js
-  scope: meta.delimiter.object.comma.js
+- name: meta.delimiter.comma.js
+  scope: meta.delimiter.comma.js
   settings:
     foreground: '#00FFFF'
 

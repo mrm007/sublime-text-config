@@ -1,7 +1,9 @@
 <snippet>
-	<content><![CDATA[<style${1:${2: type="text/css"}${3: media="${4:screen}"}}>
+	<content><![CDATA[
+<style${1:${2: type="text/css"}${3: media="${4:screen}"}}>
 	$5
-</style>$0]]></content>
+</style>$0
+]]></content>
 	<tabTrigger>style</tabTrigger>
 	<scope>source.php,text.html</scope>
 	<description>&lt;style&gt;</description>

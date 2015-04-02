@@ -127,6 +127,28 @@ Available settings:
 Troubleshooting
 ---------------
 
+If you are having problems or SublimeCodeIntel seems slow/unresponsive/non-working, there are some things you should try:
+
+1. Make sure the SublimeCodeIntel is not being treated as an ignored package.
+
+2. Regenerate indexing database.
+
+3. Open a new issue.
+
+
+Ignored package?
+~~~~~~~~~~~~~~~~
+
+To make sure Sublime Text didn't add SublimeCodeIntel to the list of ignored packages (this happens some times when packages are being installed/upgraded):
+
+* Select the ``Preferences/Settings - Default`` menu item
+
+* Find the ``ignored_packages`` setting and remove SublimeCodeIntel from the list.
+
+
+Regenerate index
+~~~~~~~~~~~~~~~~
+
 To force re-indexation of the code intelligence database you need to follow these steps:
 
 * Close Sublime Text
@@ -135,7 +157,16 @@ To force re-indexation of the code intelligence database you need to follow thes
 
 * Delete the whole directory ``~/.codeintel`` and all of its content. Particularly, if you want to delete only the indexes, the code intelligence database indexes are located inside ``~/.codeintel/db``.
 
-* Start Sublime Text and enjoy a clean re-indexing!
+* Start Sublime Text
+
+* Try doing some code intelligence with the files in your project and enjoy a clean re-indexing! (Remember that the database is being regenerated with this procedure, so you'll see it takes some time to autocomplete the first few times, you'll have to wait a bit for things to be fast again)
+
+Opening an issue
+~~~~~~~~~~~~~~~~
+
+If the problems persists after trying the above solutions, open a new issue in https://github.com/SublimeCodeIntel/SublimeCodeIntel/issues/
+
+When opening new issues, please check no other issues exist which report the same problem and provide all the messages from the Sublime Text console (the console is accessed via the ``ctrl+``` shortcut or the ``View > Show Console`` menu) and the ``~/.codeintel/codeintel.log`` file (``%userprofile%\.codeintel\codeintel.log`` in Windows) as well as mentioning the Sublime Text version, the platform you are using and the languages you are using the code intelligence on.
 
 
 Building
@@ -146,8 +177,90 @@ Building process is no longer distributed with this repository. You need to get 
 More information in SublimeCodeIntel/CodeIntelSources/`src <https://github.com/SublimeCodeIntel/CodeIntelSources/src>`_.
 
 
+Notes
+-----
+
+For the next major version of SublimeCodeIntel (v3.0.0) you will have to ensure
+that CodeIntel package (https://pypi.python.org/pypi/CodeIntel) is installed on
+your system usually by using pip or easy_install. The Code intelligence will be
+handled by that package and the command ``codeintel`` it will install.
+
+
+Please start trying to install the CodeIntel package as soon as possible to make
+sure you are ready for the upcoming version of SublimeCodeIntel:
+
+1. Install Python 2 and pip (http://www.pip-installer.org/en/latest/installing.html).
+
+2. Install (or upgrade) ``CodeIntel`` by typing the following in a terminal: ``pip install -U codeintel``
+
+
 What's New
 ----------
+
+v3.0.0 (unreleased, alpha):
+
++ Uses CodeIntel as an OOP command and package.
+  Needs to install CodeIntel with pip: `pip install codeintel`
+
+
+v2.2.0 (2015-03-26):
+
++ Fixed issue with tabs and autocomplete
+
+
+v2.1.9 (2015-03-21):
+
++ Fixed issue with codeintel_enabled()
+
+
+v2.1.8 (2015-03-18):
+
++ Fixed issue with is_enabled()
+
++ Do not autocomplete on ENTER
+
+
+v2.1.7 (2015-01-26):
+
++ Fixed triggering issues with autocompletion and stop chars.
+
++ ST2 improvements. Still might show "slow plugin"
+  (just ignore, project_file_name is being emulated from ST3, which is "slow")
+
++ Cleanups
+
+
+v2.1.6 (2015-01-23):
+
++ Optimizations.
+
++ Compatibility issues with ST2.
+
++ Stop characters fixed.
+
+
+v2.1.5 (2015-01-22):
+
++ Cleanups.
+
++ Autocomplete also triggered after space (for import<space> autocompletions).
+
++ Tooltip and snippets for functions re-added.
+
+
+v2.1.4 (2015-01-21):
+
++ Improved compatibility with ST2
+
++ PHP magic-methods tweaks ported from wizza-smile's fork.
+
+
+v2.1.3 (2015-01-20):
+
++ Features and enhancements from wizza-smile's fork.
+
++ PHP completions within function brackets.
+
 
 v2.1.2 (2015-01-16):
 

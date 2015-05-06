@@ -1,0 +1,1 @@
+{"description": "Auto-complete paths and filenames from the filesystem, \u00e0 la Ctrl-X,Ctrl-F in VIM", "url": "https://github.com/lingo/sublime-fscompletion", "platforms": ["*"], "version": "0.2.4", "sublime_text": "*", "dependencies": []}

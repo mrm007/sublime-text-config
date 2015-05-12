@@ -4,6 +4,7 @@
 		"node_modules/"
 	],
 	"bold_folder_labels": true,
+	"caret_style": "wide",
 	"color_scheme": "Packages/Dayle Rees Color Schemes/sublime/light/snappy-light.tmTheme",
 	"copy_with_empty_selection": false,
 	"drag_text": false,

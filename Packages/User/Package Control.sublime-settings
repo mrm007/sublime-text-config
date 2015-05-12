@@ -6,7 +6,6 @@
 	"installed_packages":
 	[
 		"BracketHighlighter",
-		"CoffeeScript",
 		"Color Highlighter",
 		"Compare Side-By-Side",
 		"Compass",
@@ -43,7 +42,6 @@
 		"SyncedSideBar",
 		"Syntax Highlighting for Sass",
 		"Tag",
-		"Theme - Brackets",
 		"Theme - Soda",
 		"Tomorrow Color Schemes",
 		"VBScript",

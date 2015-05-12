@@ -1,25 +1,8 @@
-*.cache
-*.pyc
-
-Package Control.last-run
-Package Control.ca-list
-Package Control.ca-bundle
-Package Control.system-ca-bundle
-Package Control.merged-ca-bundle
-Package Control.user-ca-bundle
-Package Control.cache/
-Package Control.ca-certs/
-
 /Backup
 /Cache
-/Pristine Packages
-/Settings
 /Index
 /Installed Packages
-
-License.sublime_license
-Auto Save Session.sublime_session
-Session.sublime_session
+/Local
 
 /Packages
 !/Packages/User

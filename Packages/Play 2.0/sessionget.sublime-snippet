@@ -1,8 +1,0 @@
-<snippet>
-    <content><![CDATA[
-request.session.get("${1:key}")${2://}.map { $3 }.getOrElse { $4 } 
-]]></content>
-    <tabTrigger>sessionget</tabTrigger>
-    <scope>source.scala</scope>
-</snippet>
-

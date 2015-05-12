@@ -18,10 +18,10 @@
   "lint_on_load": false,
 
   // Automatically lint when a file is saved.
-  "lint_on_save": true,
+  "lint_on_save": false,
 
   // Highlight problematic regions when selected.
-  "highlight_selected_regions": true,
+  "highlight_selected_regions": false,
 
   // Log the settings passed to JSHint from `.jshintrc`.
   "print_diagnostics": true

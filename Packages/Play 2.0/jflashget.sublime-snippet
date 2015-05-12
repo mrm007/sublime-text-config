@@ -1,7 +1,0 @@
-<snippet>
-	<content><![CDATA[
-String ${1:value} = flash("${2:item.key}");
-]]></content>
-	<tabTrigger>flashget</tabTrigger>
-	<scope>source.java</scope>
-</snippet>

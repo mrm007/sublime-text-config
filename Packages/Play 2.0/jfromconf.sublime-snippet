@@ -1,7 +1,0 @@
-<snippet>
-	<content><![CDATA[
-String ${1:val} = Play.application().configuration().getString( ${2:"stuff"} );
-]]></content>
-	<tabTrigger>fromconf</tabTrigger>
-	<scope>source.java</scope>
-</snippet>

@@ -1,7 +1,0 @@
-<snippet>
-	<content><![CDATA[
-Redirect( routes.Application.${1:index()} )
-]]></content>
-	<tabTrigger>redirect</tabTrigger>
-	<scope>source.scala</scope>
-</snippet>

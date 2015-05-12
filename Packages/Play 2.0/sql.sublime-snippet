@@ -1,7 +1,0 @@
-<snippet>
-	<content><![CDATA[
-SQL( "$1" )${2://}.on( )${3://}.as( )
-]]></content>
-	<tabTrigger>sql</tabTrigger>
-	<scope>source.scala</scope>
-</snippet>

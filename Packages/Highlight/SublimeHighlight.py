@@ -1,42 +1,33 @@
 # -*- coding: utf-8 -*-
 
-"""
-    TODO:
-    - customize rendered HTML to ease choosing a new theme
-"""
-
-import desktop
 import os
-import pygments
 import re
 import sublime
 import sublime_plugin
 import subprocess
 import tempfile
 
-from pygments import highlight
-from pygments.lexers import *
-from pygments.formatters import *
-from pygments.styles import STYLE_MAP
+import sys
+sys.path.append(os.path.dirname(__file__)+"/HighlightLib")
+
+import desktop
+import pygments.lexers
+import pygments.formatters
 
 if desktop.get_desktop() == 'Windows':
-    import winclip
-
-# Don't judge me. Just don't. If you knew, you wouldn't.
-__lexers = ['_asybuiltins', '_clbuiltins', '_lassobuiltins', '_luabuiltins',
-    '_mapping', '_openedgebuiltins', '_phpbuiltins', '_postgres_builtins',
-    '_scilab_builtins', '_sourcemodbuiltins', '_stan_builtins', '_vimbuiltins']
-for l in __lexers:
-    __import__('pygments.lexers.%s' % l)
-for s in STYLE_MAP:
-    __import__('pygments.styles.%s' % s)
+    from .HighlightLib import winclip
 
 DEFAULT_STYLE = "default"
 FORMATS = ('html', 'rtf',)
 WIN_CR_RE = re.compile(r"\r(?!\n)|(?<!\r)\n")
 
-settings = sublime.load_settings('%s.sublime-settings' % __name__)
+def settings_get(name, default=None):
+    plugin_settings = sublime.load_settings('SublimeHighlight.sublime-settings')
+    return plugin_settings.get(name, default)
 
+class OpenHighlightCommand(sublime_plugin.TextCommand):
+    def run(self, edit, content):
+        self.view.insert(edit, 0, content)
 
 class SublimeHighlightCommand(sublime_plugin.TextCommand):
     """Code highlighter command."""
@@ -76,11 +67,11 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
 
     def get_formatter(self, output_type, full=True):
         return pygments.formatters.get_formatter_by_name(output_type,
-            linenos=settings.get('linenos', False),
-            noclasses=settings.get('noclasses', False),
-            style=settings.get('theme', DEFAULT_STYLE),
-            full=settings.get('full', full),
-            fontface=settings.get('fontface', ''))
+            linenos=settings_get('linenos', False),
+            noclasses=settings_get('noclasses', False),
+            style=settings_get('theme', DEFAULT_STYLE),
+            full=settings_get('full', full),
+            fontface=settings_get('fontface', ''))
 
     def get_lexer(self, code=None):
         code = code if code is not None else self.code
@@ -96,22 +87,22 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
         if not lexer:
             lexer = pygments.lexers.guess_lexer(code)
         try:
-            options = settings.get('lexer_options', {}).get(lexer.name)
+            options = settings_get('lexer_options', {}).get(lexer.name)
         except AttributeError:
             return lexer
         if not options:
             return lexer
         # handle lexer options
-        for option, value in options.iteritems():
+        for option, value in options.items():
             try:
                 setattr(lexer, option, value)
             except AttributeError:
-                sublime.error_message(u'Highlight: unsupported %s lexer option: "%s"'
+                sublime.error_message('Highlight: unsupported %s lexer option: "%s"'
                                       % (lexer.name, option))
         return lexer
 
     def highlight(self, output_type, full=True):
-        return highlight(self.code, self.get_lexer(),
+        return pygments.highlight(self.code, self.get_lexer(),
             self.get_formatter(output_type, full))
 
     def run(self, edit, target='external', output_type='html'):
@@ -121,14 +112,14 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
         # html clipboard output on windows should not be self-contained
         win = all([platform == 'Windows', output_type == 'html',
             target == 'clipboard'])
-        full = False if win else settings.get('full', True)
+        full = False if win else settings_get('full', True)
 
         pygmented = self.highlight(output_type, full)
 
         if target == 'external':
             filename = '%s.%s' % (self.view.id(), output_type,)
             tmp_file = self.write_file(filename, pygmented)
-            sublime.status_message(u'Written %s preview file: %s'
+            sublime.status_message('Written %s preview file: %s'
                                    % (output_type.upper(), tmp_file))
             if platform == 'Mac OS X':
                 # for some reason desktop.open is broken under OSX Lion
@@ -156,17 +147,15 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
             new_view = self.view.window().new_file()
             if output_type == 'html':
                 new_view.set_syntax_file('Packages/HTML/HTML.tmLanguage')
-            new_edit = new_view.begin_edit()
-            new_view.insert(new_edit, 0, pygmented)
-            new_view.end_edit(new_edit)
+            new_view.run_command("open_highlight", {'content': pygmented})
         else:
-            sublime.error_message(u'Unsupported target "%s"' % target)
+            sublime.error_message('Unsupported target "%s"' % target)
 
     def write_file(self, filename, contents, encoding=None):
         """Writes highlighted contents onto the filesystem."""
         encoding = encoding if encoding is not None else self.encoding
         tmp_fullpath = os.path.join(tempfile.gettempdir(), filename)
-        tmp_file = open(tmp_fullpath, 'w')
+        tmp_file = open(tmp_fullpath, 'wb')
         tmp_file.write(contents.encode(encoding))
         tmp_file.close()
         return tmp_fullpath

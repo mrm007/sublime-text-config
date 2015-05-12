@@ -1,7 +1,0 @@
-<snippet>
-	<content><![CDATA[
-unauthorized$($2);
-]]></content>
-	<tabTrigger>unauth</tabTrigger>
-	<scope>source.java</scope>
-</snippet>

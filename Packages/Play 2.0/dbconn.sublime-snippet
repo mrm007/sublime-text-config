@@ -1,9 +1,0 @@
-<snippet>
-	<content><![CDATA[
-DB.withConnection { implicit conn =>
-    $1
-}
-]]></content>
-	<tabTrigger>dbconn</tabTrigger>
-	<scope>source.scala</scope>
-</snippet>

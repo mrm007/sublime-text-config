@@ -1,7 +1,0 @@
-<snippet>
-	<content><![CDATA[
-return redirect( ${1:"/"} );
-]]></content>
-	<tabTrigger>redirect</tabTrigger>
-	<scope>source.java</scope>
-</snippet>

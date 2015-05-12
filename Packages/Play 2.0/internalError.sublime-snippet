@@ -1,7 +1,0 @@
-<snippet>
-	<content><![CDATA[
-InternalServerError${1:($2)}
-]]></content>
-	<tabTrigger>interr</tabTrigger>
-	<scope>source.scala</scope>
-</snippet>

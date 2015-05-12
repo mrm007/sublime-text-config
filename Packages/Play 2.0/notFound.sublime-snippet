@@ -1,7 +1,0 @@
-<snippet>
-	<content><![CDATA[
-NotFound${1:($2)}
-]]></content>
-	<tabTrigger>notfound</tabTrigger>
-	<scope>source.scala</scope>
-</snippet>

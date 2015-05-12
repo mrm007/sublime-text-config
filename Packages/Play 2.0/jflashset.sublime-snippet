@@ -1,7 +1,0 @@
-<snippet>
-	<content><![CDATA[
-flash("${1:item.key}", "${2:value}");
-]]></content>
-	<tabTrigger>flashset</tabTrigger>
-	<scope>source.java</scope>
-</snippet>

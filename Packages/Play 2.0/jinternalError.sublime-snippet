@@ -1,7 +1,0 @@
-<snippet>
-	<content><![CDATA[
-internalServerError($2);
-]]></content>
-	<tabTrigger>interr</tabTrigger>
-	<scope>source.java</scope>
-</snippet>

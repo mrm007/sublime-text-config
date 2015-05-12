@@ -1448,7 +1448,7 @@ class PythonCodeIntel(sublime_plugin.EventListener):
             if exclude_scope in sublime_scope:
                 return
 
-        if not settings_manager.get('codeintel_live', default=True, language=lang):
+        if not lang or lang.lower() not in [l.lower() for l in settings_manager.get('codeintel_enabled_languages', [])]:
             # restore the original sublime auto_complete settings from Preferences.sublime-settings file in User package
             # this is for files with mixed languages (HTML/PHP)
             view.settings().set('auto_complete', settings_manager.sublime_auto_complete)
@@ -1533,6 +1533,11 @@ class PythonCodeIntel(sublime_plugin.EventListener):
 
     def on_query_completions(self, view, prefix, locations):
         vid = view.id()
+
+        lang = guess_lang(view)
+        if not lang or lang.lower() not in [l.lower() for l in settings_manager.get('codeintel_enabled_languages', [])]:
+            # lang is not ci enabled. Dont mess with the default completions!
+            return []
 
         # add sublime completions to the mix / not recomended
         sublime_word_completions = False

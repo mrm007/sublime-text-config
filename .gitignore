@@ -4,6 +4,10 @@
 /Installed Packages
 /Local
 
-/Packages
+Package Control.*
+*.cache
+
+/Packages/*
 !/Packages/User
-/Packages/User/Color Highlighter/themes
+/Packages/User/Color Highlighter/*
+/Packages/User/SublimeLinter/*

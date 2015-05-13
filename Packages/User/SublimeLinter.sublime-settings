@@ -22,7 +22,7 @@
             "eslint": {
                 "@disable": false,
                 "args": [],
-                "excludes": []
+                "excludes": ["*.bundle.js"]
             }
         },
         "mark_style": "outline",

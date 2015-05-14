@@ -28,8 +28,9 @@
 	"ignored_packages":
 	[
 		"LiveReload",
+		"Vintage",
 		"Markdown",
-		"Vintage"
+		"JavaScript"
 	],
 	"indent_guide_options":
 	[

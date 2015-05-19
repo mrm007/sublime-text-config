@@ -1,13 +1,2 @@
 [
-	// Eclipse-like
-	{ "keys": ["alt+up"], "command": "swap_line_up" },
-	{ "keys": ["alt+down"], "command": "swap_line_down" },
-	{ "keys": ["ctrl+alt+up"], "command": "duplicate_line" },
-	{ "keys": ["ctrl+alt+down"], "command": "duplicate_line" },
-	{ "keys": ["shift+ctrl+r"], "command": "show_overlay", "args": {"overlay": "goto", "show_files": true} },
-	{ "keys": ["ctrl+l"], "command": "show_overlay", "args": {"overlay": "goto", "text": ":"} },
-	{ "keys": ["ctrl+d"], "command": "run_macro_file", "args": {"file": "Packages/Default/Delete Line.sublime-macro"} },
-	// other
-	{ "keys": ["ctrl+f12"], "command": "show_overlay", "args": {"overlay": "command_palette", "text": "Package Control: "} },
-	{ "keys": ["ctrl+shift+d"], "command": "plain_tasks_complete","context": [{ "key": "selector", "operator": "equal", "operand": "text.todo" }] }
 ]

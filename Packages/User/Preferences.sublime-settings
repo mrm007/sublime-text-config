@@ -27,9 +27,9 @@
 	"highlight_modified_tabs": true,
 	"ignored_packages":
 	[
-		"LiveReload",
-		"Vintage",
 		"Markdown",
+		"Vintage",
+		"LiveReload",
 		"JavaScript"
 	],
 	"indent_guide_options":

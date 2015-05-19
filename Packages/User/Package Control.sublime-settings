@@ -5,6 +5,7 @@
 	],
 	"installed_packages":
 	[
+		"Babel",
 		"BracketHighlighter",
 		"Color Highlighter",
 		"Compare Side-By-Side",
@@ -20,14 +21,11 @@
 		"Focus",
 		"Generic Config",
 		"Git Config",
-		"Glue",
 		"Highlight",
 		"HTML5",
 		"INI",
 		"JavaScript Refactor",
-		"JavaScriptNext - ES6 Syntax",
 		"JsFormat",
-		"LESS",
 		"LineEndings",
 		"LiveReload",
 		"MarkdownEditing",

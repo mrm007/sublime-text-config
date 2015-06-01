@@ -1,6 +1,8 @@
 {
 	"extensions":
 	[
-		"es6"
+		"es6",
+		"js",
+		"jsx"
 	]
 }

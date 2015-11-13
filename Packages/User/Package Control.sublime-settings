@@ -1,11 +1,13 @@
 {
 	"auto_upgrade_last_run": null,
+	"bootstrapped": true,
 	"in_process_packages":
 	[
 	],
 	"installed_packages":
 	[
 		"Babel",
+		"Babel Snippets",
 		"BracketHighlighter",
 		"Color Highlighter",
 		"Compare Side-By-Side",
@@ -22,7 +24,6 @@
 		"Generic Config",
 		"Git Config",
 		"Highlight",
-		"HTML5",
 		"INI",
 		"JavaScript Refactor",
 		"JsFormat",
@@ -37,6 +38,7 @@
 		"SublimeLinter",
 		"SublimeLinter-annotations",
 		"SublimeLinter-contrib-eslint",
+		"SublimeLinter-contrib-eslint_d",
 		"SyncedSideBar",
 		"Syntax Highlighting for Sass",
 		"Tag",

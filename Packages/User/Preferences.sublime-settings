@@ -27,8 +27,8 @@
 	"highlight_modified_tabs": true,
 	"ignored_packages":
 	[
-		"Vintage",
-		"Markdown"
+		"Markdown",
+		"Vintage"
 	],
 	"indent_guide_options":
 	[
@@ -41,6 +41,6 @@
 	"tab_size": 2,
 	"theme": "Soda Light 3.sublime-theme",
 	"tree_animation_enabled": false,
-	"trim_automatic_white_space": false,
+	"trim_automatic_white_space": true,
 	"word_wrap": true
 }

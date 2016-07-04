@@ -3,9 +3,12 @@
 	"bootstrapped": true,
 	"in_process_packages":
 	[
+		"DashDoc"
 	],
 	"installed_packages":
 	[
+		"ApplySyntax",
+		"AutoFileName",
 		"Babel",
 		"Babel Snippets",
 		"BracketHighlighter",
@@ -16,24 +19,30 @@
 		"DashDoc",
 		"Dayle Rees Color Schemes",
 		"DocBlockr",
+		"EditorConfig",
 		"Emmet",
-		"FileSystem Autocompletion",
 		"Find++",
 		"FixMyJS",
 		"Focus",
 		"Generic Config",
+		"Git",
 		"Git Config",
 		"Highlight",
 		"INI",
 		"JavaScript Refactor",
+		"JS Coverage",
 		"JsFormat",
 		"LineEndings",
 		"MarkdownEditing",
 		"Open Folder",
 		"Package Control",
-		"Play 2.0",
 		"SassBeautify",
+		"Schemr",
 		"SCSS",
+		"Seti_UI",
+		"Seti_UX",
+		"SideBarEnhancements",
+		"Stylus",
 		"SublimeCodeIntel",
 		"SublimeLinter",
 		"SublimeLinter-annotations",
@@ -43,8 +52,8 @@
 		"Syntax Highlighting for Sass",
 		"Tag",
 		"Theme - Soda",
+		"Themr",
 		"Tomorrow Color Schemes",
-		"VBScript",
 		"WordHighlight"
 	]
 }

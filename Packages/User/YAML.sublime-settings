@@ -1,6 +1,9 @@
 {
 	"extensions":
 	[
+		"yml.dist",
+		"yml",
+		".gemrc",
 		"sls"
 	]
 }

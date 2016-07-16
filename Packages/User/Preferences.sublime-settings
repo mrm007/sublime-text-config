@@ -29,7 +29,7 @@
 	"caret_extra_top": 1,
 	"caret_extra_width": 2,
 	"caret_style": "smooth",
-	"color_scheme": "Packages/User/SublimeLinter/snappy (SL).tmTheme",
+	"color_scheme": "Packages/User/SublimeLinter/snappy-light (SL).tmTheme",
 	"copy_with_empty_selection": false,
 	"default_line_ending": "unix",
 	"dictionary": "Packages/Language - English/en_GB.dic",
@@ -63,7 +63,7 @@
 	"shift_tab_unindent": true,
 	"show_tab_close_buttons": false,
 	"tab_size": 2,
-	"theme": "Seti_orig.sublime-theme",
+	"theme": "Soda Light 3.sublime-theme",
 	"tree_animation_enabled": false,
 	"trim_automatic_white_space": true,
 	"word_wrap": true

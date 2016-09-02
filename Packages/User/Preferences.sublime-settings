@@ -40,8 +40,8 @@
 	"ensure_newline_at_eof_on_save": true,
 	"fade_fold_buttons": false,
 	"find_selected_text": true,
-	"font_face": "Inconsolata",
-	"font_size": 14,
+	"font_face": "FiraCode-Retina",
+	"font_size": 12,
 	"highlight_line": true,
 	"highlight_modified_tabs": true,
 	"ignored_packages":

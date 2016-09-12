@@ -3,11 +3,11 @@
 	[
 		"rabl",
 		"rake",
+		"jbuilder",
+		"Vagrantfile",
+		"podspec",
 		"rb",
 		"simplecov",
-		"podspec",
-		"Vagrantfile",
-		"jbuilder",
 		"thor"
 	]
 }

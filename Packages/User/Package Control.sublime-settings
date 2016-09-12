@@ -3,7 +3,6 @@
 	"bootstrapped": true,
 	"in_process_packages":
 	[
-		"DashDoc"
 	],
 	"installed_packages":
 	[
@@ -37,8 +36,6 @@
 		"Package Control",
 		"Schemr",
 		"SCSS",
-		"Seti_UI",
-		"Seti_UX",
 		"SideBarEnhancements",
 		"Stylus",
 		"SublimeCodeIntel",
@@ -49,6 +46,7 @@
 		"SyncedSideBar",
 		"Tag",
 		"Theme - Soda",
+		"Theme - SoDaReloaded",
 		"Themr",
 		"Tomorrow Color Schemes",
 		"WordHighlight"

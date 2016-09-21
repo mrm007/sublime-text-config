@@ -1,7 +1,6 @@
 {
 	"extensions":
 	[
-		"json",
-		".eslintrc"
+		"json"
 	]
 }

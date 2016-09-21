@@ -11,3 +11,4 @@ Package Control.*
 !/Packages/User
 /Packages/User/Color Highlighter/*
 /Packages/User/SublimeLinter/*
+/Packages/User/oscrypto-ca-bundle.crt

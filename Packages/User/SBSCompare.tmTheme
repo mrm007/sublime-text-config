@@ -671,6 +671,16 @@
         </dict>
     <dict>
             <key>name</key>
+            <string>SublimeLinter Error</string>
+            <key>scope</key>
+            <string>sublimelinter.mark.error</string>
+            <key>settings</key>
+            <dict>
+                <key>foreground</key>
+                <string>#D02000</string>
+            </dict>
+        </dict><dict>
+            <key>name</key>
             <string>SublimeLinter Gutter Mark</string>
             <key>scope</key>
             <string>sublimelinter.gutter-mark</string>
@@ -688,16 +698,6 @@
             <dict>
                 <key>foreground</key>
                 <string>#DDB700</string>
-            </dict>
-        </dict><dict>
-            <key>name</key>
-            <string>SublimeLinter Error</string>
-            <key>scope</key>
-            <string>sublimelinter.mark.error</string>
-            <key>settings</key>
-            <dict>
-                <key>foreground</key>
-                <string>#D02000</string>
             </dict>
         </dict><dict><key>name</key><string>Comparison removed</string><key>scope</key><string>comparison.removed</string><key>settings</key><dict><key>background</key><string>#bf616a</string><key>foreground</key><string>#2b303b</string></dict></dict><dict><key>name</key><string>Comparison modified</string><key>scope</key><string>comparison.modified</string><key>settings</key><dict><key>background</key><string>#7fa3c7</string><key>foreground</key><string>#2b303b</string></dict></dict><dict><key>name</key><string>Comparison added</string><key>scope</key><string>comparison.added</string><key>settings</key><dict><key>background</key><string>#a3be8c</string><key>foreground</key><string>#2b303b</string></dict></dict></array>
     <key>uuid</key>

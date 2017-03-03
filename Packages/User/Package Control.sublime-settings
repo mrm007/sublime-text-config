@@ -43,6 +43,7 @@
 		"SublimeLinter-annotations",
 		"SublimeLinter-contrib-eslint",
 		"SublimeLinter-contrib-eslint_d",
+		"SublimeLinter-flow",
 		"SyncedSideBar",
 		"Tag",
 		"Theme - Soda",
